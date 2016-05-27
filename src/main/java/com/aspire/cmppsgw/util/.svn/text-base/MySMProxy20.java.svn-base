@@ -1,0 +1,64 @@
+package com.aspire.cmppsgw.util;
+
+import java.io.File;
+
+import org.slf4j.Logger;
+
+import com.aspire.cmppsgw.GlobalEnv;
+import com.aspire.cmppsgw.ec.ECProp;
+import com.huawei.insa2.comm.cmpp.message.CMPPDeliverMessage;
+import com.huawei.insa2.comm.cmpp.message.CMPPMessage;
+import com.huawei.insa2.util.Args;
+import com.huawei.insa2.util.Cfg;
+import com.huawei.smproxy.SMProxy;
+
+public class MySMProxy20 extends SMProxy {
+	private static MySMProxy20 instance;
+	private static Logger logger = LogAgent.systemInfoLogger;
+	private static Logger error_logger = LogAgent.ErrorLogger;
+	private static boolean dev_model = GlobalEnv.getInstance().getBoolValue("dev.model", false);
+	public MySMProxy20(Args args) {
+		super(args);
+	}
+	
+	public  String getStatus(){
+		return super.getConnState();
+	}
+
+	public static void main(String[] args) {
+		getInstance();
+	}
+
+	public static synchronized MySMProxy20 getInstance() {
+		if(dev_model){
+			logger.info("dev_model return null");
+			return null;
+		}
+		if (instance == null) {
+			MySMProxy();
+		}
+		return instance;
+	}
+
+	private static void MySMProxy() {
+		try {
+			File file = new File(MySMProxy20.class.getClassLoader().getResource("SMProxy.xml").getPath());
+			Args args = new Cfg(file.getAbsolutePath(), false)
+					.getArgs("CMPPConnect");
+			instance = new MySMProxy20(args);
+			logger.info("*********login success**********");
+		} catch (Exception e) {
+			error_logger.error("MySMProxy error " + e.getMessage(),e);
+		}
+	}
+
+	public CMPPMessage onDeliver(CMPPDeliverMessage msg) {
+		ECProp ec = GlobalEnv.getInstance().getECRuntime(msg.getDestnationId());
+		if(ec == null){
+			logger.warn(msg.getSrcterminalId()+"-->"+msg.getDestnationId()+"is not exist.");
+		}
+		logger.debug(msg.getSrcterminalId()+"-->"+msg.getDestnationId());
+		ec.getStorer().addMessage(msg);
+		return super.onDeliver(msg);
+	}
+}

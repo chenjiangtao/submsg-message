@@ -1,0 +1,68 @@
+package com.aspire.cmppsgw.job;
+
+import java.io.File;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+
+import com.aspire.cmppsgw.GlobalEnv;
+import com.aspire.cmppsgw.util.LogAgent;
+import com.aspire.cmppsgw.util.SMSender;
+
+/**
+ * @desc 对错误日志文件进行短信提示
+ * @author majiangtao@aspirehld.com
+ * @date 2012-5-2
+ * 
+ */
+
+public class WarnErrorLogSMJob implements Job {
+	
+	public static Logger monitorInfoLogger = LogAgent.monitorInfoLogger;
+	
+	private static int count = 0;
+	/*
+	 * 记录上一次错误文件日志的大小
+	 */
+	private static long base_time = 0;
+	private static long new_time = 0;
+
+	@Override
+	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+		monitorInfoLogger.info("start execute check error log job...");
+		try {
+			String filepath = GlobalEnv.getInstance().getValue("error.log.file.path");
+			File error_file = new File(filepath);
+			
+			if(error_file != null){
+				new_time = error_file.lastModified();
+				if(count == 0){
+					base_time = error_file.lastModified();
+				}
+			}
+			monitorInfoLogger.info("new time:"+new_time + ",base time:"+base_time);
+			
+			/*
+			 * 如果日志的大小产生变化则发送短信
+			 */
+			if (new_time != base_time) {
+				String[] mobiles = GlobalEnv.getInstance().getValue("error.log.mobile").split(",");
+				for(int i = 0; i < mobiles.length; i++){
+					SMSender.send(mobiles[i],
+							GlobalEnv.getInstance().getValue("error.log.content"),
+							GlobalEnv.getInstance().getValue("error.log.user"),
+							GlobalEnv.getInstance().getValue("error.log.url"));	
+				}
+				base_time = new_time;
+			}
+			monitorInfoLogger.info("new base time:"+base_time);
+			count++;
+		} catch (Exception e) {
+			monitorInfoLogger.error("检查错误日志失败", e);
+		}
+		monitorInfoLogger.info("end execute check error log job...");
+	}
+	
+}

@@ -1,0 +1,72 @@
+package com.aspire.cmppsgw.job;
+
+import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+
+import com.aspire.cmppsgw.GlobalEnv;
+import com.aspire.cmppsgw.db.DAO;
+import com.aspire.cmppsgw.message.ReportMessage;
+import com.aspire.cmppsgw.util.DateUtil;
+import com.aspire.cmppsgw.util.LogAgent;
+import com.aspire.cmppsgw.util.MySMProxy20;
+import com.huawei.insa2.comm.cmpp.message.CMPPMessage;
+import com.huawei.insa2.comm.cmpp.message.CMPPSubmitMessage;
+import com.huawei.insa2.comm.cmpp.message.CMPPSubmitRepMessage;
+
+/**
+ * @desc 定时发送信息给指定人员
+ * @author majiangtao@aspirehld.com
+ * @date 2012-5-2
+ * 
+ */
+
+public class SendTestSMSJob implements Job {
+	
+	public static Logger monitorInfoLogger = LogAgent.monitorInfoLogger;
+	
+	@Override
+	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+		monitorInfoLogger.info("start execute send test sms job...");
+		try {
+			SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String dateStr = sfd.format(new Date());
+			String content = "【" + dateStr + "】" + new String(GlobalEnv.getInstance().getValue("send.sms.content").getBytes("ISO-8859-1"));
+			String[] mobiles = GlobalEnv.getInstance().getValue("send.sms.mobile").split(",");
+			DAO dao = new DAO();
+			String report_table = GlobalEnv.getInstance().getValue("nokia.report.table");
+			String report_seq = GlobalEnv.getInstance().getValue("nokia.report.seq");
+			for(int i = 0; i < mobiles.length; i++){
+				String[] ms = {mobiles[i]};
+				monitorInfoLogger.info("send mobile " + mobiles[i] + " send content " + content);
+				MySMProxy20 mySMProxy = MySMProxy20.getInstance();
+				CMPPSubmitMessage csm = new CMPPSubmitMessage(1, 1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), 3,
+						mobiles[i], 0, 0, 15, GlobalEnv.getInstance().getValue("send.sms.spid"), "01", "0", null, null,
+						GlobalEnv.getInstance().getValue("send.sms.srcid"),ms,content.getBytes(), "");
+				CMPPMessage submitRepMsg = mySMProxy.send(csm);
+				CMPPSubmitRepMessage crm = (CMPPSubmitRepMessage) submitRepMsg;
+				ByteBuffer buffer = ByteBuffer.wrap(crm.getMsgId());
+				long msgId = buffer.getLong();
+				monitorInfoLogger.info("send result:[" + "id:testsms" + ",msgid:" + msgId + ",result:" + crm.getResult() + "]");
+				ReportMessage rm = new ReportMessage();
+				rm.setSend_time(DateUtil.getCurrentFullTime());
+				rm.setMobile(mobiles[i]);
+				rm.setMsg_content(content);
+				rm.setMsg_id(msgId);
+				rm.setReport_id(10000001);
+				rm.setSend_status(String.valueOf(crm.getResult()));
+				dao.insertSendReport(rm,report_table,report_seq);
+				
+			}
+		} catch (Exception e) {
+			monitorInfoLogger.error("发送测试短信失败", e);
+		}
+		monitorInfoLogger.info("end execute send test sms job...");
+	}
+	
+}

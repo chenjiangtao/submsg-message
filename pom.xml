@@ -5,4 +5,53 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>submsg-message</name>
   <description>消息处理</description>
+  
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<build>
+	<finalName>submsg-message</finalName>
+	<resources>
+		<resource>
+			<directory>src/main/java</directory>
+			<includes>
+				<include>**/*.xml</include>
+			</includes>
+		</resource>
+		<resource>
+			<directory>src/main/resources</directory>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+		</resource>
+	</resources>
+	<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+	 </pluginManagement>
+	</build>
+	
+  <dependencies>
+		 <dependency>
+            <groupId>cn.submsg</groupId>
+            <artifactId>submsg-module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+  	    </dependency>
+  	    <dependency> 
+			<groupId>smproxy</groupId> 
+			<artifactId>smproxy</artifactId> 
+			<version>1.0.0</version> 
+		</dependency>
+  
+	</dependencies>
 </project>
