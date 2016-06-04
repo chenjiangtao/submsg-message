@@ -4,13 +4,13 @@
     <!--与InfoX建立连接所需参数-->
     <CMPPConnect>
        <!-- InfoX主机地址 -->
-       <host>10.2.5.141</host>
+       <host>111.13.19.105</host>
        <!-- InfoX主机端口号 -->
-       <port>7891</port>
+       <port>7890</port>
        <!--(登录帐号SP…ID)-->
-       <source-addr>NK9641</source-addr>
+       <source-addr>785805</source-addr>
        <!--登录密码-->
-       <shared-secret>223Ix|</shared-secret>
+       <shared-secret>aaa@111</shared-secret>
        <!-- 心跳信息发送间隔时间(单位：秒) -->
        <heartbeat-interval>30</heartbeat-interval>
        <!-- 连接中断时重连间隔时间(单位：秒)-->
