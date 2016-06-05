@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.aspire.cmppsgw.GlobalEnv;
 import com.aspire.cmppsgw.LongSMSUtil;
 import com.aspire.cmppsgw.util.MySMProxy20;
@@ -14,12 +16,17 @@ import com.huawei.insa2.comm.cmpp.message.CMPPSubmitRepMessage;
 import com.huawei.insa2.util.TypeConvert;
 import com.sr178.game.framework.log.LogSystem;
 
+import cn.submsg.member.dao.MsgSendLogDao;
+
 public class MessageService {
 
 	public static int tp_Pid =  GlobalEnv.getInstance().getIntValue("tp_Pid");
 	public static int tp_Udhi =  GlobalEnv.getInstance().getIntValue("tp_Udhi");
 	public static int fmt =  GlobalEnv.getInstance().getIntValue("fmt");
 	public static int fee_UserType =  GlobalEnv.getInstance().getIntValue("fee_UserType");
+	
+	@Autowired
+	private MsgSendLogDao msgSendLogDao;
 	/**
 	 * 短信发送
 	 * @param merchantID  商户id
