@@ -2,7 +2,7 @@
 
 dir
 2685
-svn://10.2.5.147/Nokia%E9%A1%B9%E7%9B%AE/cmppsgw/1.0/CMPPSGW/src/com/aspire/cmppsgw/startup
+svn://10.2.5.147/Nokia%E9%A1%B9%E7%9B%AE/cmppsgw/1.0/CMPPSGW/src/com/aspire/cmppsgw/job
 svn://10.2.5.147
 
 
@@ -26,14 +26,14 @@ svn:special svn:externals svn:needs-lock
 
 82014635-0bb0-4438-ace8-639b713ca340
 
-BootStartup.java
+SendTestSMSJob.java
 file
 
 
 
 
-2014-03-13T01:10:00.006000Z
-286ca77e31236bee5ae3a6236fdd0b92
+2014-03-13T01:10:00.224000Z
+71addec5fdf72ba3ec22eb77deb0564d
 2012-08-22T09:09:29.132100Z
 921
 yuanyangyang
@@ -58,16 +58,16 @@ yuanyangyang
 
 
 
-2603
+2981
 
-Server.java
+WarnErrorLogSMJob.java
 file
 
 
 
 
-2014-03-13T01:10:00.022000Z
-cff3dd6f203e6f775186507cdac04d6d
+2014-03-13T01:10:00.240000Z
+310a9debcc859aeb753e3559731559c4
 2012-08-22T09:09:29.132100Z
 921
 yuanyangyang
@@ -92,5 +92,5 @@ yuanyangyang
 
 
 
-4853
+1936
 

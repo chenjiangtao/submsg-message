@@ -15,7 +15,7 @@ import com.huawei.insa2.comm.cmpp.message.CMPPSubmitRepMessage;
 import com.huawei.insa2.util.TypeConvert;
 
 /**
- * @desc ¶¨Ê±·¢ËÍĞÅÏ¢¸øÖ¸¶¨ÈËÔ±
+ * @desc å®šæ—¶å‘é€ä¿¡æ¯ç»™æŒ‡å®šäººå‘˜
  * @author majiangtao@aspirehld.com
  * @date 2012-5-2
  * 
@@ -37,7 +37,7 @@ public class SendLongSMS {
 		try {
 			SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dateStr = sfd.format(new Date());
-			String content = "¡¾" + dateStr + "¡¿" + GlobalEnv.getInstance().getValue("send.sms.content");
+			String content = "ã€" + dateStr + "ã€‘" + GlobalEnv.getInstance().getValue("send.sms.content");
 			String mobile = GlobalEnv.getInstance().getMobile();	
 				String[] ms = {mobile};
 				monitorInfoLogger.info("send mobile " +mobile + " send content " + content);
@@ -45,7 +45,7 @@ public class SendLongSMS {
 				if(mySMProxy == null){
 					return;
 				}
-				monitorInfoLogger.info("tp_Pid£º"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt);
+				monitorInfoLogger.info("tp_Pidï¼š"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt);
 				byte[][] smschars = LongSMSUtil.enCodeBytes(content,true);
 				List<CMPPMessage> list = new ArrayList<CMPPMessage>();
 				for (int i = 0; i < smschars.length; i++) {
@@ -54,18 +54,18 @@ public class SendLongSMS {
 							GlobalEnv.getInstance().getValue("send.sms.srcid"),ms,smschars[i], "");
 					list.add(csm);
 				}
-				monitorInfoLogger.info("list£º"+list.size());
+				monitorInfoLogger.info("listï¼š"+list.size());
 				for(CMPPMessage csm:list){
 					CMPPMessage submitRepMsg = mySMProxy.send(csm);
 					CMPPSubmitRepMessage crm = (CMPPSubmitRepMessage) submitRepMsg;
 					long msgId = TypeConvert.byte2long(crm.getMsgId());
-					//¼ÇÂ¼ÏÂ·¢ÈÕÖ¾,²»ÓÃ½øĞĞÖØ·¢
+					//è®°å½•ä¸‹å‘æ—¥å¿—,ä¸ç”¨è¿›è¡Œé‡å‘
 					mt_Logger.info(mobile+"," + msgId + ",result:" + crm.getResult());	
 				}
 				
 				
 		} catch (Exception e) {
-			monitorInfoLogger.error("·¢ËÍ²âÊÔ¶ÌĞÅÊ§°Ü", e);
+			monitorInfoLogger.error("å‘é€æµ‹è¯•çŸ­ä¿¡å¤±è´¥", e);
 		}
 		monitorInfoLogger.info("end execute send test sms job...");
 	}

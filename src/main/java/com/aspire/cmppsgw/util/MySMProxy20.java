@@ -49,7 +49,7 @@ public class MySMProxy20 extends SMProxy {
 	public CMPPMessage onDeliver(CMPPDeliverMessage msg) {
 
 		try {
-			// ×´Ì¬±¨¸æ
+			// ×´Ì¬ï¿½ï¿½ï¿½ï¿½
 			if (msg.getRegisteredDeliver() == 1) {
 				ByteBuffer buffer = ByteBuffer.wrap(msg.getStatusMsgId());
 				long mId = buffer.getLong();

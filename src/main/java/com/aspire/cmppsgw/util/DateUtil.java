@@ -30,9 +30,9 @@ public class DateUtil {
 	}
 
     /**
-     * µÃµ½µ±Ç°ÈÕÆÚ
+     * å¾—åˆ°å½“å‰æ—¥æœŸ
      *
-     * @return String µ±Ç°ÈÕÆÚ yyyy-MM-dd HH:mm:ss¸ñÊ½
+     * @return String å½“å‰æ—¥æœŸ yyyy-MM-dd HH:mm:ssæ ¼å¼
      * @author kevin
      */
     public static String getCurDateTime() {
@@ -44,9 +44,9 @@ public class DateUtil {
     }
     
     /**
-     * µÃµ½µ±Ç°ÈÕÆÚ
+     * å¾—åˆ°å½“å‰æ—¥æœŸ
      *
-     * @return String µ±Ç°ÈÕÆÚ yyyyMMdd¸ñÊ½
+     * @return String å½“å‰æ—¥æœŸ yyyyMMddæ ¼å¼
      * @author kevin
      */
     public static String getCurDateYYYYMMDD() {
@@ -58,7 +58,7 @@ public class DateUtil {
     }
 
     /**
-     * ÊÇ·ñÊÇ½ñÌì
+     * æ˜¯å¦æ˜¯ä»Šå¤©
      *
      * @param strDate yyyy-MM-dd
      * @return
@@ -82,7 +82,7 @@ public class DateUtil {
     }
     
     /**
-     * ÊÇ·ñÊÇ½ñÌì
+     * æ˜¯å¦æ˜¯ä»Šå¤©
      *
      * @param strDate yyyy-MM-dd
      * @return
@@ -100,9 +100,9 @@ public class DateUtil {
     }
 
     /**
-     * »ñÈ¡¼¸Ğ¡Ê±ºóµÄÊ±¼ä
+     * è·å–å‡ å°æ—¶åçš„æ—¶é—´
      *
-     * @param hour   Ğ¡Ê±
+     * @param hour   å°æ—¶
      * @param format hh:mm:ss
      * @return HH:MM:SS
      */
@@ -117,10 +117,10 @@ public class DateUtil {
     }
 
     /**
-     * µÃµ½µ±Ç°ÈÕÆÚ
+     * å¾—åˆ°å½“å‰æ—¥æœŸ
      *
-     * @param formatÈÕÆÚ¸ñÊ½
-     * @return String µ±Ç°ÈÕÆÚ  formatÈÕÆÚ¸ñÊ½
+     * @param formatæ—¥æœŸæ ¼å¼
+     * @return String å½“å‰æ—¥æœŸ  formatæ—¥æœŸæ ¼å¼
      * @author kevin
      */
     public static String getCurDateTime(String format) {
@@ -130,15 +130,15 @@ public class DateUtil {
             sdf.setTimeZone(TimeZone.getDefault());
             return (sdf.format(now.getTime()));
         } catch (Exception e) {
-            return getCurDateTime(); // Èç¹ûÎŞ·¨×ª»¯£¬Ôò·µ»ØÄ¬ÈÏ¸ñÊ½µÄÊ±¼ä¡£
+            return getCurDateTime(); // å¦‚æœæ— æ³•è½¬åŒ–ï¼Œåˆ™è¿”å›é»˜è®¤æ ¼å¼çš„æ—¶é—´ã€‚
         }
     }
     
     /**
-     * µÃµ½Ê±¼ä´Á
+     * å¾—åˆ°æ—¶é—´æˆ³
      *
      * @param null
-     * @return String µ±Ç°ÈÕÆÚÊ±¼ä´Á(yyyyMMddHHmmssSSSS)
+     * @return String å½“å‰æ—¥æœŸæ—¶é—´æˆ³(yyyyMMddHHmmssSSSS)
      * @author kevin
      */
     public static String getTimeStamp() {
@@ -148,12 +148,12 @@ public class DateUtil {
             sdf.setTimeZone(TimeZone.getDefault());
             return (sdf.format(now.getTime()));
         } catch (Exception e) {
-            return getCurDateTime(); // Èç¹ûÎŞ·¨×ª»¯£¬Ôò·µ»ØÄ¬ÈÏ¸ñÊ½µÄÊ±¼ä¡£
+            return getCurDateTime(); // å¦‚æœæ— æ³•è½¬åŒ–ï¼Œåˆ™è¿”å›é»˜è®¤æ ¼å¼çš„æ—¶é—´ã€‚
         }
     }
 
     /**
-     * ÈÕÆÚ×ª×Ö·û´®
+     * æ—¥æœŸè½¬å­—ç¬¦ä¸²
      *
      * @return String
      * @author kevin
@@ -163,14 +163,14 @@ public class DateUtil {
         return df.format(thedate.getTime());
     }
 
-    //parseDateToString(Date thedate, String format)µÄÖØÔØ·½·¨
+    //parseDateToString(Date thedate, String format)çš„é‡è½½æ–¹æ³•
     public static String parseDateToString(Date thedate) {
         //String format = "yyyy-MM-dd";
         return parseDateToString(thedate, "yyyy-MM-dd");
     }
 
     /**
-     * ×Ö·û´®×ªÈÕÆÚ
+     * å­—ç¬¦ä¸²è½¬æ—¥æœŸ
      *
      * @return Date
      * @author kevin
@@ -187,10 +187,10 @@ public class DateUtil {
     }
 
     /**
-     * ÓÉStringĞÍÈÕÆÚ×ª³ÉformatĞÎÊ½String
+     * ç”±Stringå‹æ—¥æœŸè½¬æˆformatå½¢å¼String
      *
-     * @param format1Ô­ÏÈ¸ñÊ½
-     * @param format2×ª»¯¸ñÊ½
+     * @param format1åŸå…ˆæ ¼å¼
+     * @param format2è½¬åŒ–æ ¼å¼
      * @return String
      * @author kevin
      */
@@ -203,11 +203,11 @@ public class DateUtil {
     }
 
     /**
-     * µÃµ½NÌìºóµÄÈÕÆÚ
+     * å¾—åˆ°Nå¤©åçš„æ—¥æœŸ
      *
-     * @param theDateÄ³ÈÕÆÚ ¸ñÊ½ yyyy-MM-dd
-     * @param nDayNum    NÌì
-     * @return String NÌìºóµÄÈÕÆÚ
+     * @param theDateæŸæ—¥æœŸ æ ¼å¼ yyyy-MM-dd
+     * @param nDayNum    Nå¤©
+     * @return String Nå¤©åçš„æ—¥æœŸ
      * @author kevin
      */
     public static String afterNDaysDate(String theDate, String nDayNum, String format) {
@@ -220,16 +220,16 @@ public class DateUtil {
             sdf.setTimeZone(TimeZone.getDefault());
             return (sdf.format(cal.getTime()));
         } catch (Exception e) {
-            return getCurDateTime(format); // Èç¹ûÎŞ·¨×ª»¯£¬Ôò·µ»ØÄ¬ÈÏ¸ñÊ½µÄÊ±¼ä¡£
+            return getCurDateTime(format); // å¦‚æœæ— æ³•è½¬åŒ–ï¼Œåˆ™è¿”å›é»˜è®¤æ ¼å¼çš„æ—¶é—´ã€‚
         }
     }
 
     /**
-     * µÃµ½NĞ¡Ê±ºóµÄÈÕÆÚ
+     * å¾—åˆ°Nå°æ—¶åçš„æ—¥æœŸ
      *
-     * @param theDateÄ³ÈÕÆÚ ¸ñÊ½´«Èë´«³ö¸ñÊ½¶¼ÊÇ format¸ñÊ½
-     * @param nDayNum    NĞ¡Ê±
-     * @return String NĞ¡Ê±ºóµÄÈÕÆÚ
+     * @param theDateæŸæ—¥æœŸ æ ¼å¼ä¼ å…¥ä¼ å‡ºæ ¼å¼éƒ½æ˜¯ formatæ ¼å¼
+     * @param nDayNum    Nå°æ—¶
+     * @return String Nå°æ—¶åçš„æ—¥æœŸ
      * @author kevin
      */
     public static String afterNHoursDate(String theDate, String nHourNum, String format) {
@@ -242,16 +242,16 @@ public class DateUtil {
             sdf.setTimeZone(TimeZone.getDefault());
             return (sdf.format(cal.getTime()));
         } catch (Exception e) {
-            return getCurDateTime(format); // Èç¹ûÎŞ·¨×ª»¯£¬Ôò·µ»ØÄ¬ÈÏ¸ñÊ½µÄÊ±¼ä¡£
+            return getCurDateTime(format); // å¦‚æœæ— æ³•è½¬åŒ–ï¼Œåˆ™è¿”å›é»˜è®¤æ ¼å¼çš„æ—¶é—´ã€‚
         }
     }
 
     /**
-     * µÃµ½N·ÖÖÓºóµÄÈÕÆÚ
+     * å¾—åˆ°Nåˆ†é’Ÿåçš„æ—¥æœŸ
      *
-     * @param theDateÄ³ÈÕÆÚ ¸ñÊ½ yyyy-MM-dd
-     * @param nDayNum    N·ÖÖÓ
-     * @return String N·ÖÖÓºóµÄÈÕÆÚ
+     * @param theDateæŸæ—¥æœŸ æ ¼å¼ yyyy-MM-dd
+     * @param nDayNum    Nåˆ†é’Ÿ
+     * @return String Nåˆ†é’Ÿåçš„æ—¥æœŸ
      * @author kevin
      */
     public static String afterNMinsDate(String theDate, String nMinNum, String format) {
@@ -264,11 +264,11 @@ public class DateUtil {
             sdf.setTimeZone(TimeZone.getDefault());
             return (sdf.format(cal.getTime()));
         } catch (Exception e) {
-            return getCurDateTime(format); // Èç¹ûÎŞ·¨×ª»¯£¬Ôò·µ»ØÄ¬ÈÏ¸ñÊ½µÄÊ±¼ä¡£
+            return getCurDateTime(format); // å¦‚æœæ— æ³•è½¬åŒ–ï¼Œåˆ™è¿”å›é»˜è®¤æ ¼å¼çš„æ—¶é—´ã€‚
         }
     }
 
-    //±È½ÏÁ½¸ö×Ö·û´®¸ñÊ½ÈÕÆÚ´óĞ¡,´ø¸ñÊ½µÄÈÕÆÚ
+    //æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ ¼å¼æ—¥æœŸå¤§å°,å¸¦æ ¼å¼çš„æ—¥æœŸ
     public static boolean isBefore(String strdat1, String strdat2, String format) {
         try {
             Date dat1 = parseStringToDate(strdat1, format);
@@ -280,17 +280,17 @@ public class DateUtil {
         }
     }
 
-    //±È½ÏÁ½¸ö×Ö·û´®¸ñÊ½ÈÕÆÚ´óĞ¡,Ä¬ÈÏ×ª»»¸ñÊ½:yyyy-MM-dd
+    //æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ ¼å¼æ—¥æœŸå¤§å°,é»˜è®¤è½¬æ¢æ ¼å¼:yyyy-MM-dd
     public static boolean isBefore(String strdat1, String strdat2) {
         //String format = "yyyy-MM-dd";
         return isBefore(strdat1, strdat2, "yyyy-MM-dd");
     }
 
     /**
-     * »ñÈ¡ĞİÏ¢Ê±¼ä
+     * è·å–ä¼‘æ¯æ—¶é—´
      *
-     * @param strTime strTime=" 3:00:00"; ĞèÒªĞİÏ¢µÄÊ±¼ä£¬×¢ÒâÓĞ¿Õ¸ñ
-     * @return ĞèÒªĞİÏ¢µÄÊ±¼ä
+     * @param strTime strTime=" 3:00:00"; éœ€è¦ä¼‘æ¯çš„æ—¶é—´ï¼Œæ³¨æ„æœ‰ç©ºæ ¼
+     * @return éœ€è¦ä¼‘æ¯çš„æ—¶é—´
      * @throws ParseException
      */
     public static long getSleepTime(String strTime) throws ParseException {
@@ -320,7 +320,7 @@ public class DateUtil {
 
 		return fullTime.substring(11, 16);
 	}
-	//µÃµ½ÈÕÆÚÊı×éÖĞ×îĞ¡ÈÕÆÚ
+	//å¾—åˆ°æ—¥æœŸæ•°ç»„ä¸­æœ€å°æ—¥æœŸ
 	public static String getMinDateOfArray(String dateArray[]){
 		String dateTmp="";
 		if(dateArray!=null){
@@ -333,7 +333,7 @@ public class DateUtil {
 		}
 		return dateTmp;
 	}
-	//µÃµ½ÈÕÆÚÊı×éÖĞ×î´óÈÕÆÚ
+	//å¾—åˆ°æ—¥æœŸæ•°ç»„ä¸­æœ€å¤§æ—¥æœŸ
 	public static String getMaxDateOfArray(String dateArray[]){
 		String dateTmp="";
 		if(dateArray!=null){
@@ -376,7 +376,7 @@ public class DateUtil {
 		return false;
 	}
 	/*
-	 * µÃµ½ÉÏÒ»¸öÔÂ»òÕßÏÂÒ»¸öÔÂµÄÈÕÆÚ
+	 * å¾—åˆ°ä¸Šä¸€ä¸ªæœˆæˆ–è€…ä¸‹ä¸€ä¸ªæœˆçš„æ—¥æœŸ
 	 */
 	public static String getDayafterMonth(String theDate,int month,String formatStr){
 		Calendar now = Calendar.getInstance();
@@ -389,7 +389,7 @@ public class DateUtil {
 	}
 	
 	/**
-	 * È¡Ö¸¶¨ÈÕÆÚÉÏ¸öÔÂµÄ×îºóÒ»Ìì
+	 * å–æŒ‡å®šæ—¥æœŸä¸Šä¸ªæœˆçš„æœ€åä¸€å¤©
 	 * @param yyyy-mm-dd
 	 * @return
 	 */
@@ -398,17 +398,17 @@ public class DateUtil {
 		  int month=Integer.parseInt(yyyymmdd.substring(5, 7));
 		  System.out.println(year+","+month);
 	       Calendar cal = Calendar.getInstance(); 
-	        cal.set(Calendar.YEAR, year);// Äê 
-	        cal.set(Calendar.MONTH, month - 1);// ÔÂ£¬ÒòÎªCalendarÀïµÄÔÂÊÇ´Ó0¿ªÊ¼£¬ËùÒÔÒª¼õ1 
-	        cal.set(Calendar.DATE, 1);// ÈÕ£¬ÉèÎªÒ»ºÅ 
-	        cal.add(Calendar.MONTH, 1);// ÔÂ·İ¼ÓÒ»£¬µÃµ½ÏÂ¸öÔÂµÄÒ»ºÅ 
-	        cal.add(Calendar.DATE, -1);// ÏÂÒ»¸öÔÂ¼õÒ»Îª±¾ÔÂ×îºóÒ»Ìì 
+	        cal.set(Calendar.YEAR, year);// å¹´ 
+	        cal.set(Calendar.MONTH, month - 1);// æœˆï¼Œå› ä¸ºCalendaré‡Œçš„æœˆæ˜¯ä»0å¼€å§‹ï¼Œæ‰€ä»¥è¦å‡1 
+	        cal.set(Calendar.DATE, 1);// æ—¥ï¼Œè®¾ä¸ºä¸€å· 
+	        cal.add(Calendar.MONTH, 1);// æœˆä»½åŠ ä¸€ï¼Œå¾—åˆ°ä¸‹ä¸ªæœˆçš„ä¸€å· 
+	        cal.add(Calendar.DATE, -1);// ä¸‹ä¸€ä¸ªæœˆå‡ä¸€ä¸ºæœ¬æœˆæœ€åä¸€å¤© 
 	        SimpleDateFormat sdf = new SimpleDateFormat(format);
-	        return sdf.format(cal.getTime());// »ñµÃÔÂÄ©ÊÇ¼¸ºÅ 
+	        return sdf.format(cal.getTime());// è·å¾—æœˆæœ«æ˜¯å‡ å· 
 	    }
 	 
 		/**
-		 * µÃµ½ÉÏ¸öÔÂµÚÒ»ÌìµÄyyyy-mm-dd
+		 * å¾—åˆ°ä¸Šä¸ªæœˆç¬¬ä¸€å¤©çš„yyyy-mm-dd
 		 * 
 		 * @return
 		 */
@@ -422,7 +422,7 @@ public class DateUtil {
 		
 		
 		/**
-		 * µÃµ½ÉÏ¸öÔÂ×îºóÒ»ÌìµÄyyyy-MM-dd
+		 * å¾—åˆ°ä¸Šä¸ªæœˆæœ€åä¸€å¤©çš„yyyy-MM-dd
 		 * 
 		 * @return
 		 */
@@ -437,7 +437,7 @@ public class DateUtil {
 		
 		
 		/**
-		 * È¥ÉÏ¸öÔÂµÄÔÂ·İyyyy-MM
+		 * å»ä¸Šä¸ªæœˆçš„æœˆä»½yyyy-MM
 		 * 
 		 * @return
 		 */
@@ -451,7 +451,7 @@ public class DateUtil {
 		
 		
 		/**
-		 * È¡µÃÄ³ÔÂµÄµÄ×îºóÒ»Ìì
+		 * å–å¾—æŸæœˆçš„çš„æœ€åä¸€å¤©
 		 * 
 		 * @param year
 		 * @param month
@@ -460,11 +460,11 @@ public class DateUtil {
 		 */
 		public static Date getLastDayOfMonth(int year, int month) {
 			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.YEAR, year);// Äê
-			cal.set(Calendar.MONTH, month - 1);// ÔÂ£¬ÒòÎªCalendarÀïµÄÔÂÊÇ´Ó0¿ªÊ¼£¬ËùÒÔÒª¼õ1
-			// ÉèÖÃ¸ÃÔÂÊµ¼ÊµÄ×îºóÒ»Ìì
+			cal.set(Calendar.YEAR, year);// å¹´
+			cal.set(Calendar.MONTH, month - 1);// æœˆï¼Œå› ä¸ºCalendaré‡Œçš„æœˆæ˜¯ä»0å¼€å§‹ï¼Œæ‰€ä»¥è¦å‡1
+			// è®¾ç½®è¯¥æœˆå®é™…çš„æœ€åä¸€å¤©
 			cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-			return cal.getTime();// »ñµÃÔÂÄ©ÊÇ¼¸ºÅ
+			return cal.getTime();// è·å¾—æœˆæœ«æ˜¯å‡ å·
 		}
 	 
 	 

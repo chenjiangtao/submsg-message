@@ -28,14 +28,14 @@ public class BootStartup {
 	}
 
 	/**
-	 * Æô¶¯·şÎñÆ÷
+	 * å¯åŠ¨æœåŠ¡å™¨
 	 */
 	private void startup() throws Exception{
 		new Server(shutdown,port).load();
 	}
 
 	/**
-	 * ÖÕÖ¹·şÎñÆ÷
+	 * ç»ˆæ­¢æœåŠ¡å™¨
 	 */
 	private void shutdown() {
 		System.out.println("Stoping Server");
@@ -76,19 +76,19 @@ public class BootStartup {
 							+ strDate + " =============[port:" + port + "]");
 
 			/**
-			 * Èç¹ûÃ»ÓĞÃüÁîĞĞ²ÎÊıÔòÈÏÎªÊÇ start ÃüÁî
+			 * å¦‚æœæ²¡æœ‰å‘½ä»¤è¡Œå‚æ•°åˆ™è®¤ä¸ºæ˜¯ start å‘½ä»¤
 			 */
 			String command = "startup";
 			if (args.length > 0) {
-				command = args[args.length - 1]; // Èç¹ûÓĞ¶à¸öÃüÁîĞĞ²ÎÊıÔòÈ¡×îºóÒ»¸ö
+				command = args[args.length - 1]; // å¦‚æœæœ‰å¤šä¸ªå‘½ä»¤è¡Œå‚æ•°åˆ™å–æœ€åä¸€ä¸ª
 			}
 
 			if (command.equals("startup")) {
-				// Æô¶¯·şÎñÆ÷ÃüÁî
+				// å¯åŠ¨æœåŠ¡å™¨å‘½ä»¤
 				System.out.println("Starting Server ...... ......");
 				boot.startup();
 			} else if (command.equals("shutdown")) {
-				// Í£Ö¹·şÎñÆ÷ÃüÁî
+				// åœæ­¢æœåŠ¡å™¨å‘½ä»¤
 				System.out.println("Stoping Server ...... ......");
 				boot.shutdown();
 			}

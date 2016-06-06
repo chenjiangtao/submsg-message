@@ -17,7 +17,7 @@ import com.huawei.insa2.comm.cmpp.message.CMPPSubmitRepMessage;
 import com.huawei.insa2.util.TypeConvert;
 
 /**
- * @desc ¶¨Ê±·¢ËÍĞÅÏ¢¸øÖ¸¶¨ÈËÔ±
+ * @desc å®šæ—¶å‘é€ä¿¡æ¯ç»™æŒ‡å®šäººå‘˜
  * @author majiangtao@aspirehld.com
  * @date 2012-5-2
  * 
@@ -31,12 +31,13 @@ public class SendTestSMSJob implements Job {
 	public static int tp_Pid =  1;
 	public static int tp_Udhi = 6;
 	
+	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		monitorInfoLogger.info("start execute send test sms job...");
 		try {
 			SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dateStr = sfd.format(new Date());
-			String content = "¡¾" + dateStr + "¡¿" + GlobalEnv.getInstance().getValue("send.sms.content");
+			String content = "ã€" + dateStr + "ã€‘" + GlobalEnv.getInstance().getValue("send.sms.content");
 			String mobile = GlobalEnv.getInstance().getMobile();	
 				String[] ms = {mobile};
 				monitorInfoLogger.info("send mobile " +mobile + " send content " + content);
@@ -52,10 +53,10 @@ public class SendTestSMSJob implements Job {
 				CMPPMessage submitRepMsg = mySMProxy.send(csm);
 				CMPPSubmitRepMessage crm = (CMPPSubmitRepMessage) submitRepMsg;
 				long msgId = TypeConvert.byte2long(crm.getMsgId());
-				//¼ÇÂ¼ÏÂ·¢ÈÕÖ¾,²»ÓÃ½øĞĞÖØ·¢
+				//è®°å½•ä¸‹å‘æ—¥å¿—,ä¸ç”¨è¿›è¡Œé‡å‘
 				mt_Logger.info(mobile+"," + msgId + ",result:" + crm.getResult());	
 		} catch (Exception e) {
-			monitorInfoLogger.error("·¢ËÍ²âÊÔ¶ÌĞÅÊ§°Ü", e);
+			monitorInfoLogger.error("å‘é€æµ‹è¯•çŸ­ä¿¡å¤±è´¥", e);
 		}
 		monitorInfoLogger.info("end execute send test sms job...");
 	}

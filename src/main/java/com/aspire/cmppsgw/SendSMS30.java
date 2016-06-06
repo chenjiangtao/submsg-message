@@ -13,7 +13,7 @@ import com.huawei.insa2.comm.cmpp30.message.CMPP30SubmitRepMessage;
 import com.huawei.insa2.util.TypeConvert;
 
 /**
- * @desc ¶¨Ê±·¢ËÍĞÅÏ¢¸øÖ¸¶¨ÈËÔ±
+ * @desc å®šæ—¶å‘é€ä¿¡æ¯ç»™æŒ‡å®šäººå‘˜
  * @author majiangtao@aspirehld.com
  * @date 2012-5-2
  * 
@@ -36,7 +36,7 @@ public class SendSMS30 {
 		try {
 			SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dateStr = sfd.format(new Date());
-			String content = "¡¾" + dateStr + "¡¿" + GlobalEnv.getInstance().getValue("send.sms.content");
+			String content = "ã€" + dateStr + "ã€‘" + GlobalEnv.getInstance().getValue("send.sms.content");
 			String mobile = GlobalEnv.getInstance().getMobile();	
 				String[] ms = {mobile};
 				
@@ -45,7 +45,7 @@ public class SendSMS30 {
 					return;
 				}
 				monitorInfoLogger.info("send mobile " +mobile + " send content " + content);
-				monitorInfoLogger.info("tp_Pid£º"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt);
+				monitorInfoLogger.info("tp_Pidï¼š"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt);
 				CMPP30SubmitMessage csm = new CMPP30SubmitMessage(1, 1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
 						mobile, Fee_Terminal_Type,tp_Pid, tp_Udhi, fmt, GlobalEnv.getInstance().getValue("send.sms.spid"), "01", "0", null, null,
 						GlobalEnv.getInstance().getValue("send.sms.srcid"),ms,0,content.getBytes(), "");
@@ -54,10 +54,10 @@ public class SendSMS30 {
 				CMPPMessage submitRepMsg = mySMProxy.send(csm);
 				CMPP30SubmitRepMessage crm = (CMPP30SubmitRepMessage) submitRepMsg;
 				long msgId = TypeConvert.byte2long(crm.getMsgId());
-				//¼ÇÂ¼ÏÂ·¢ÈÕÖ¾,²»ÓÃ½øĞĞÖØ·¢
+				//è®°å½•ä¸‹å‘æ—¥å¿—,ä¸ç”¨è¿›è¡Œé‡å‘
 				mt_Logger.info(mobile+"," + msgId + ",result:" + crm.getResult());	
 		} catch (Exception e) {
-			monitorInfoLogger.error("·¢ËÍ²âÊÔ¶ÌĞÅÊ§°Ü", e);
+			monitorInfoLogger.error("å‘é€æµ‹è¯•çŸ­ä¿¡å¤±è´¥", e);
 		}
 		monitorInfoLogger.info("end execute send test sms job...");
 	}

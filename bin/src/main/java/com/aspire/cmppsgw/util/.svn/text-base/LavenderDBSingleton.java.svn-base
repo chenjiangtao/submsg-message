@@ -1,0 +1,118 @@
+package com.aspire.cmppsgw.util;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.slf4j.Logger;
+
+import com.aspire.cmppsgw.GlobalEnv;
+import com.devdaily.opensource.database.DDConnectionBroker;
+
+/**
+ * @desc 尽量用第三方连接池的连接
+ * @author majiangtao@aspirehld.com
+ * @date 2012-2-26
+ * 
+ */
+
+public class LavenderDBSingleton {
+	private static Logger logger = LogAgent.systemInfoLogger;
+	private DDConnectionBroker m_broker; 
+    private static LavenderDBSingleton m_singleton = null; 
+  
+    private LavenderDBSingleton() 
+    { 
+       /* 
+        * We will put all of our database-specific information 
+        * here. Please note that we could have read this 
+        * information from a properties file. 
+        */ 
+  
+         String driver         = GlobalEnv.getInstance().getValue("jdbc.driver"); 
+         String url            = GlobalEnv.getInstance().getValue("jdbc.url"); 
+         String uname = GlobalEnv.getInstance().getValue("jdbc.user"); 
+         String passwd = GlobalEnv.getInstance().getValue("jdbc.pwd");  
+  
+         int minConnections  = Integer.parseInt(GlobalEnv.getInstance().getValue("jdbc.minconn")); 
+         int maxConnections  = Integer.parseInt(GlobalEnv.getInstance().getValue("jdbc.maxconn"));
+         long timeout        = Long.parseLong(GlobalEnv.getInstance().getValue("jdbc.timeout")); 
+         long leaseTime      = Long.parseLong(GlobalEnv.getInstance().getValue("jdbc.leaseTime")); 
+         String logFile        = GlobalEnv.getInstance().getValue("jdbc.logfile"); 
+          
+         try 
+         { 
+             m_broker = new DDConnectionBroker(driver, 
+                                             url, uname, passwd, 
+                                             minConnections, 
+                                             maxConnections, 
+                                             timeout, 
+                                             leaseTime, 
+                                             logFile); 
+         } 
+         catch (SQLException se) 
+         { 
+             logger.error( se.getMessage() ); 
+         } 
+    } 
+    /**  
+     *  getInstance() returns the class, instantiating it 
+     *  if there is not yet an instance in the VM.  
+     */ 
+    public static LavenderDBSingleton getInstance() 
+    { 
+        if (m_singleton == null) 
+        { 
+            m_singleton = new LavenderDBSingleton();  
+        } 
+         
+        return (m_singleton);  
+    } 
+  
+    /* 
+     * calls getConnection() on the broker class  
+     */ 
+    public synchronized Connection getConnection() throws Exception  
+    { 
+        if (m_broker == null) 
+        { 
+            throw new Exception("Can't get Connection broker!");  
+        } 
+        return (m_broker.getConnection()); 
+    } 
+  
+    /* 
+     * frees the connection from the broker class 
+     */ 
+    public synchronized void colseConn(Connection con)  
+     throws Exception  
+    { 
+        if (m_broker == null ) 
+        { 
+            throw new Exception("Can't get Connection broker!");  
+        } 
+        m_broker.freeConnection(con);  
+    } 
+    
+    public void colse(ResultSet rs,Statement sta,Connection con){
+    	if(rs!=null) try{rs.close();}catch(Exception e){logger.error(e.getMessage(),e);}
+		if(sta!=null) try{sta.close();}catch(Exception e){logger.error(e.getMessage(),e);}
+		if(con!=null) try{colseConn(con);}catch(Exception e){logger.error(e.getMessage(),e);}
+    }
+    
+    public  void close(Object o){
+		try {
+			if(o instanceof ResultSet){
+				((ResultSet)o).close();
+			}else if(o instanceof Statement){
+				((Statement)o).close();
+			}else if(o instanceof Connection){
+				colseConn((Connection)o);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+	}
+
+}

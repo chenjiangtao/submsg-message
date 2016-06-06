@@ -5,10 +5,10 @@ import org.apache.log4j.Logger;
 /**
  * 
  *  ganhua 2012-07-04  
- *      Ôö¼ÓÊôĞÔlongSmsSeq
- *      ĞÂÔö·½·¨priavate synchronized static int getNextSmsSeq
- *      ÖØÔØ·½·¨enCodeBytes 
- *      ĞŞ¸Ä·½·¨getMultiSMSBinaryData/ fillHead
+ *      å¢åŠ å±æ€§longSmsSeq
+ *      æ–°å¢æ–¹æ³•priavate synchronized static int getNextSmsSeq
+ *      é‡è½½æ–¹æ³•enCodeBytes 
+ *      ä¿®æ”¹æ–¹æ³•getMultiSMSBinaryData/ fillHead
  *
  */
 
@@ -16,20 +16,20 @@ public class LongSMSUtil {
 
 	private static final Logger log = Logger.getLogger(LongSMSUtil.class);
 
-	// ucs2±àÂë
+	// ucs2ç¼–ç 
 	private static final String CHARSET_UCS2 = "UTF-16BE";
 
-	// ×îºóÒ»Ìõ¶ÌĞÅµÄ³¤¶È£¨Ô¤ÁôÆóÒµÇ©ÃûµÄ³¤¶È£©
+	// æœ€åä¸€æ¡çŸ­ä¿¡çš„é•¿åº¦ï¼ˆé¢„ç•™ä¼ä¸šç­¾åçš„é•¿åº¦ï¼‰
 	protected static final int SMSMAXLENGTH_LAST = 139-15;
-	// Ã¿Ìõ¶ÌĞÅµÄ×î´ó×Ö½ÚÊı
+	// æ¯æ¡çŸ­ä¿¡çš„æœ€å¤§å­—èŠ‚æ•°
 	protected static final int SMSMAXLENGTH = 140;
 	// private static final int SMSMAXLENGTH = 140;
 
-	// ÏûÏ¢Í·
+	// æ¶ˆæ¯å¤´
 	//private static final byte[] MSG_HEAD = { 0x05, 0x00, 0x03, 0x00, 0x00, 0x00 };
 	 private static final byte[] MSG_HEAD = { 0x05, 0x00, 0x03, 0x09, 0x00, 0x01 };
 
-	// ÏûÏ¢Í·³¤¶È
+	// æ¶ˆæ¯å¤´é•¿åº¦
 	private static final int LENGTH_MSG_HEAD = MSG_HEAD.length;
 	// private static final int LENGTH_MSG_HEAD = 6;
 
@@ -37,21 +37,21 @@ public class LongSMSUtil {
 	
 	protected static final int MaxExtBodyLen_last = SMSMAXLENGTH_LAST - LENGTH_MSG_HEAD;
 
-	// ĞÅÏ¢¸ñÊ½ 0£ºASCII´® 3£º¶ÌĞÅĞ´¿¨²Ù×÷ 4£º¶ş½øÖÆĞÅÏ¢8£ºUCS2±àÂë15£ºº¬GBºº×Ö
+	// ä¿¡æ¯æ ¼å¼ 0ï¼šASCIIä¸² 3ï¼šçŸ­ä¿¡å†™å¡æ“ä½œ 4ï¼šäºŒè¿›åˆ¶ä¿¡æ¯8ï¼šUCS2ç¼–ç 15ï¼šå«GBæ±‰å­—
 	private static final int Msg_Fmt = 8;
 
 	
-	// ½ÓÊÕ¶ÌĞÅµÄÓÃ»§µÄºÅÂëÀàĞÍ£¬0£ºÕæÊµºÅÂë£»1£ºÎ±Âë
+	// æ¥æ”¶çŸ­ä¿¡çš„ç”¨æˆ·çš„å·ç ç±»å‹ï¼Œ0ï¼šçœŸå®å·ç ï¼›1ï¼šä¼ªç 
 	private static final int Dest_Terminal_Type = 0;
 
-	// ±»¼Æ·ÑÓÃ»§µÄºÅÂëÀàĞÍ 0£ºÕæÊµºÅÂë£»1£ºÎ±Âë
+	// è¢«è®¡è´¹ç”¨æˆ·çš„å·ç ç±»å‹ 0ï¼šçœŸå®å·ç ï¼›1ï¼šä¼ªç 
 	private static final int Fee_Terminal_Type = 0;
 
-	// µã²¥ÒµÎñÊ¹ÓÃµÄLinkID£¬·Çµã²¥ÀàÒµÎñµÄMTÁ÷³Ì²»Ê¹ÓÃ¸Ã×Ö¶Î
+	// ç‚¹æ’­ä¸šåŠ¡ä½¿ç”¨çš„LinkIDï¼Œéç‚¹æ’­ç±»ä¸šåŠ¡çš„MTæµç¨‹ä¸ä½¿ç”¨è¯¥å­—æ®µ
 	private static final String LinkID = "";
 
 	/**
-	 * ³¤¶ÌĞÅĞòÁĞºÅ
+	 * é•¿çŸ­ä¿¡åºåˆ—å·
 	 */
 	private static int longSmsSeq = 0;
 
@@ -70,7 +70,7 @@ public class LongSMSUtil {
 	}
 	
 	/**
-	 * ÖØÔØ·½·¨enCodeBytes
+	 * é‡è½½æ–¹æ³•enCodeBytes
 	 * ganhua 2012-07-04 
 	 * @param longSMS
 	 * @return
@@ -93,7 +93,7 @@ public class LongSMSUtil {
 	}
 	
 	/**
-	 * È¡µÃ³¤¶ÌĞÅ×Ü±àºÅ
+	 * å–å¾—é•¿çŸ­ä¿¡æ€»ç¼–å·
 	 * ganhua 2012-07-04
 	 * @return
 	 */
@@ -105,20 +105,20 @@ public class LongSMSUtil {
 	}
 
 	/**
-	 * ·Ö²ğÒ»Ìõcmpp¶ş½øÖÆÊı¾İÎª·ûºÏ³¤¶ÈÒªÇóµÄÈô¸ÉÌõ¶ş½øÖÆÊı¾İ
+	 * åˆ†æ‹†ä¸€æ¡cmppäºŒè¿›åˆ¶æ•°æ®ä¸ºç¬¦åˆé•¿åº¦è¦æ±‚çš„è‹¥å¹²æ¡äºŒè¿›åˆ¶æ•°æ®
 	 * 
-	 * @return Èô¸ÉÌõ¶ş½øÖÆÊı¾İ
+	 * @return è‹¥å¹²æ¡äºŒè¿›åˆ¶æ•°æ®
 	 */
 	private static byte[][] getMultiSMSBinaryData(byte[] oneBigSMS,int smsSeq) {
 		log.debug("***************getMultiSMSBinaryData begin*************");
 		// byte[] oneBigSMS = GetSMSBinaryData();
 		log.debug("oneBigSMS.length  = " + oneBigSMS.length);
 		byte[][] results;
-		// ĞèÒª¶Ô¸ÕºÃÕû³ıÇé¿ö´¦Àí£¬ËùÒÔÓÃceil£¨£©±íÊ¾ÉÏÔ¼£¬×¢Òâceil£¨£©ĞèÒª´«Èëdouble²ÎÊı²ÅÄÜµÃµ½ÕıÈ·½á¹û
+		// éœ€è¦å¯¹åˆšå¥½æ•´é™¤æƒ…å†µå¤„ç†ï¼Œæ‰€ä»¥ç”¨ceilï¼ˆï¼‰è¡¨ç¤ºä¸Šçº¦ï¼Œæ³¨æ„ceilï¼ˆï¼‰éœ€è¦ä¼ å…¥doubleå‚æ•°æ‰èƒ½å¾—åˆ°æ­£ç¡®ç»“æœ
 		int totalSMSAmount = (oneBigSMS.length <= SMSMAXLENGTH) ? 1 : ((int) Math.ceil((double) (oneBigSMS.length)
 				/ MaxExtBodyLen));
 		// ((oneBigSMS.length-UDH_LENGTH) / (SMSMAXLENGTH-UDH_EXT_LENGTH) + 1);
-		 //ÅĞ¶Ï×îºóÒ»Ìõ¶ÌĞÅµÄ³¤¶È£¬Èç¹û>SMSMAXLENGTH_LASTÔòĞè²ğ·ÖÎªÁ½Ìõ¶ÌĞÅ
+		 //åˆ¤æ–­æœ€åä¸€æ¡çŸ­ä¿¡çš„é•¿åº¦ï¼Œå¦‚æœ>SMSMAXLENGTH_LASTåˆ™éœ€æ‹†åˆ†ä¸ºä¸¤æ¡çŸ­ä¿¡
         boolean isSplit = false;
         if(oneBigSMS.length - MaxExtBodyLen*(totalSMSAmount -1 )>MaxExtBodyLen_last)
         {
@@ -127,7 +127,7 @@ public class LongSMSUtil {
         }
 		log.debug("totalSMSAmount  = " + totalSMSAmount);
 		results = new byte[totalSMSAmount][]; // a SMS per row
-		// µ¥°ü
+		// å•åŒ…
 		if (totalSMSAmount == 1) {
 			log.debug("Single SMS Packet, packet length is : " + oneBigSMS.length);
 			results[0] = new byte[oneBigSMS.length + LENGTH_MSG_HEAD];
@@ -138,11 +138,11 @@ public class LongSMSUtil {
 			log.debug("*************Single SMS Packet finished ************");
 			return results;
 		}
-		// ¶à°ü
+		// å¤šåŒ…
 		for (int j = 0; j < totalSMSAmount; j++) {
             int length = 0;
         	
-        	//Èç¹ûÎª·Ö²ğ£¬Ôòµ¹ÊıµÚ¶şÌõ³¤¶ÈÎªSMSMAXLENGTH_LAST£¬×îºóÒ»ÌõµÄËã·¨Ò²ĞèÒª±ä¶¯
+        	//å¦‚æœä¸ºåˆ†æ‹†ï¼Œåˆ™å€’æ•°ç¬¬äºŒæ¡é•¿åº¦ä¸ºSMSMAXLENGTH_LASTï¼Œæœ€åä¸€æ¡çš„ç®—æ³•ä¹Ÿéœ€è¦å˜åŠ¨
         	if(isSplit)
         	{
         		if(j==totalSMSAmount -2)
@@ -156,14 +156,14 @@ public class LongSMSUtil {
 				}
         	}
         	else{
-                // ¸ù¾İÊÇ·ñ×îºóÒ»¸ö°üÅĞ¶¨°ü³¤¶È
+                // æ ¹æ®æ˜¯å¦æœ€åä¸€ä¸ªåŒ…åˆ¤å®šåŒ…é•¿åº¦
                 length = (j != (totalSMSAmount - 1)) ? SMSMAXLENGTH
                     : (oneBigSMS.length - MaxExtBodyLen * j + LENGTH_MSG_HEAD);
         	}
 			log.debug("length of SMS packet [ " + j + " ] is " + length);
 			results[j] = new byte[length];
 			fillHead(results[j], totalSMSAmount, j + 1,smsSeq);
-			 //Èç¹ûÎª·Ö²ğÄ£Ê½£¬Ôò¼ÆËãÊı×éÎ»ÖÃÒª×¢Òâ£¬µ¹ÊıµÚÒ»Ìõ¶ÌĞÅ³¤¶ÈÎªMaxExtBodyLen_last
+			 //å¦‚æœä¸ºåˆ†æ‹†æ¨¡å¼ï¼Œåˆ™è®¡ç®—æ•°ç»„ä½ç½®è¦æ³¨æ„ï¼Œå€’æ•°ç¬¬ä¸€æ¡çŸ­ä¿¡é•¿åº¦ä¸ºMaxExtBodyLen_last
             if(isSplit&&j==totalSMSAmount-1)
             {
             	System.arraycopy(oneBigSMS, MaxExtBodyLen * (j-1)+MaxExtBodyLen_last, results[j],
@@ -183,14 +183,14 @@ public class LongSMSUtil {
 		if ((number > totalSMSAmount) || (number <= 0)) {
 			log.error("can't generate UDH correctly.");
 		}
-		System.arraycopy(MSG_HEAD, 0, result, 0, LENGTH_MSG_HEAD); // ¹Ì¶¨µÄ³¤¶ÌĞÅÏûÏ¢Í·
+		System.arraycopy(MSG_HEAD, 0, result, 0, LENGTH_MSG_HEAD); // å›ºå®šçš„é•¿çŸ­ä¿¡æ¶ˆæ¯å¤´
 		
 		if(smsSeq>0){
-			result[LENGTH_MSG_HEAD - 3] = (byte) smsSeq; // ³¤¶ÌĞÅ×Ü±àºÅ
+			result[LENGTH_MSG_HEAD - 3] = (byte) smsSeq; // é•¿çŸ­ä¿¡æ€»ç¼–å·
 		}
 		
-		result[LENGTH_MSG_HEAD - 2] = (byte) totalSMSAmount; // ³¤¶ÌĞÅÏûÏ¢×ÜÌõÊı
-		result[LENGTH_MSG_HEAD - 1] = (byte) number; // ³¤¶ÌĞÅÏûÏ¢ĞòºÅ
+		result[LENGTH_MSG_HEAD - 2] = (byte) totalSMSAmount; // é•¿çŸ­ä¿¡æ¶ˆæ¯æ€»æ¡æ•°
+		result[LENGTH_MSG_HEAD - 1] = (byte) number; // é•¿çŸ­ä¿¡æ¶ˆæ¯åºå·
 		log.debug("*******************fillUDH finished*******************");
 	}
 

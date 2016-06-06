@@ -20,17 +20,17 @@ import com.aspire.cmppsgw.util.LogAgent;
 public class Server {
 	Logger logger = LogAgent.systemInfoLogger;
 	/**
-	 * Ëæ»úÊıÉú³ÉÆ÷
+	 * éšæœºæ•°ç”Ÿæˆå™¨
 	 */
 	private Random random = null;
 
 	/**
-	 * shutdownÃüÁî
+	 * shutdownå‘½ä»¤
 	 */
 	private String shutdown = null;
 
 	/**
-	 * µÈ´ı shutdown ÃüÁîµÄ¶Ë¿ÚºÅ
+	 * ç­‰å¾… shutdown å‘½ä»¤çš„ç«¯å£å·
 	 */
 	private int port;
 
@@ -41,14 +41,14 @@ public class Server {
 
 	
 	/**
-	 * ¹¹Ôìº¯Êı
+	 * æ„é€ å‡½æ•°
 	 * 
 	 * @param shutdown
-	 *            ·şÎñÆ÷ÖÕÖ¹Ö¸Áî
+	 *            æœåŠ¡å™¨ç»ˆæ­¢æŒ‡ä»¤
 	 * @param port
-	 *            ·şÎñÆ÷ÖÕÖ¹Ö¸Áî¼àÌı¶Ë¿Ú
+	 *            æœåŠ¡å™¨ç»ˆæ­¢æŒ‡ä»¤ç›‘å¬ç«¯å£
 	 * @param scanner
-	 *            ºÚÃûµ¥É¨ÃèÆ÷
+	 *            é»‘åå•æ‰«æå™¨
 	 */
 	public Server(String shutdown, int port) {
 		this.shutdown = shutdown;
@@ -81,9 +81,9 @@ public class Server {
 	}
 
 	public void load() throws Exception {
-		start(); // Æô¶¯·şÎñ
-		await(); // µÈ´ıÖÕÖ¹·şÎñÃüÁî
-		stop(); // ÖÕÖ¹·şÎñ
+		start(); // å¯åŠ¨æœåŠ¡
+		await(); // ç­‰å¾…ç»ˆæ­¢æœåŠ¡å‘½ä»¤
+		stop(); // ç»ˆæ­¢æœåŠ¡
 	}
 
 	private void start() throws Exception {
@@ -125,14 +125,14 @@ public class Server {
 	}
 
 	/**
-	 * µÈ´ıshutdownÃüÁî£¬È»ºóreturn
+	 * ç­‰å¾…shutdownå‘½ä»¤ï¼Œç„¶åreturn
 	 */
 	public void await() {
 
-		// ÉèÁ¢Ò»¸ö Server Socket À´µÈ´ıÏûÏ¢
+		// è®¾ç«‹ä¸€ä¸ª Server Socket æ¥ç­‰å¾…æ¶ˆæ¯
 		ServerSocket serverSocket = null;
 
-		// ±£Ö¤Ò»¸ö·şÎñÆ÷Æô¶¯Ò»¸ö½ø³Ì
+		// ä¿è¯ä¸€ä¸ªæœåŠ¡å™¨å¯åŠ¨ä¸€ä¸ªè¿›ç¨‹
 		try {
 
 			serverSocket = new ServerSocket(port, 1,
@@ -143,15 +143,15 @@ public class Server {
 			System.exit(1);
 		}
 
-		// Ñ­»·µÈ´ıÒ»¸öÁ¬½Ó£¬²¢´øÓĞºÏ·¨µÄÃüÁî
+		// å¾ªç¯ç­‰å¾…ä¸€ä¸ªè¿æ¥ï¼Œå¹¶å¸¦æœ‰åˆæ³•çš„å‘½ä»¤
 		while (true) {
 
-			// µÈ´ıÏÂÒ»´ÎÁ¬½Ó
+			// ç­‰å¾…ä¸‹ä¸€æ¬¡è¿æ¥
 			Socket socket = null;
 			InputStream stream = null;
 			try {
 				socket = serverSocket.accept();
-				socket.setSoTimeout(10 * 1000); // 10Ãë
+				socket.setSoTimeout(10 * 1000); // 10ç§’
 				stream = socket.getInputStream();
 			} catch (AccessControlException ace) {
 				System.err.println("Server.accept security exception: "
@@ -162,7 +162,7 @@ public class Server {
 				System.exit(1);
 			}
 
-			// ´ÓSocketÖĞ¶ÁÈ¡Ò»×é×Ö·û
+			// ä»Socketä¸­è¯»å–ä¸€ç»„å­—ç¬¦
 			StringBuffer command = new StringBuffer();
 			int expected = 1024; // Cut off to avoid DoS attack
 			while (expected < shutdown.length()) {
@@ -193,15 +193,15 @@ public class Server {
 
 			// Match against our command string
 			boolean match = command.toString().equals(shutdown);
-			if (match) { // ÊÇ·ñÆ¥Åä
-				break; // Èç¹ûÆ¥ÅäÔòÍË³öÑ­»·
+			if (match) { // æ˜¯å¦åŒ¹é…
+				break; // å¦‚æœåŒ¹é…åˆ™é€€å‡ºå¾ªç¯
 			} else {
 				logger.error("Server.await: Invalid command '"
 						+ command.toString() + "' received");
 			}
 		}
 
-		// ¹Ø±Õ server socket ²¢ÇÒreturn
+		// å…³é—­ server socket å¹¶ä¸”return
 		try {
 			serverSocket.close();
 		} catch (IOException e) {

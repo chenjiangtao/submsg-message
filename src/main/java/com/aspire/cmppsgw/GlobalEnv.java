@@ -102,7 +102,7 @@ public class GlobalEnv {
 		}
 		return defaultVal;
 	}
-	//»ñÈ¡Ò»¸öÒªÏÂ·¢µÄºÅÂë
+	//è·å–ä¸€ä¸ªè¦ä¸‹å‘çš„å·ç 
 	public String getMobile(){
 		if(list==null || list.size() == 0){
 			list = Arrays.asList(getValue("send.sms.mobile").split(","));

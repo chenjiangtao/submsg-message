@@ -1,0 +1,108 @@
+package com.aspire.cmppsgw;
+
+import java.util.Iterator;
+
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+
+import com.aspire.cmppsgw.commons.SendQueue;
+import com.aspire.cmppsgw.ec.ECProp;
+import com.aspire.cmppsgw.message.MTMessage;
+import com.aspire.cmppsgw.thread.MOMessageStorer;
+import com.aspire.cmppsgw.thread.MTMessageLoader;
+import com.aspire.cmppsgw.thread.MTMessageSender;
+import com.aspire.cmppsgw.util.LogAgent;
+import com.huawei.insa2.comm.cmpp.message.CMPPDeliverMessage;
+
+/**
+ * @desc
+ * 每个EC会启动二个线程,一个MTMessageLoader 一个MTMessageSender 
+ * @author majiangtao@aspirehld.com
+ * @date 2012-2-23
+ * 
+ */
+
+public class CMPPService {
+	Logger logger = LogAgent.systemInfoLogger;
+	Logger error_logger = LogAgent.ErrorLogger;
+	private final static CMPPService service = new CMPPService();
+	
+	public static CMPPService getInstance(){
+		return service;
+	}
+	
+	private  CMPPService(){
+	}
+	
+	/**
+	 * 为每个ec启动线程
+	 * @throws Exception 
+	 */
+	public void start() throws Exception{
+		loadECProp();
+	}
+	
+	/**
+	 * 加载数据
+	 * 
+	 * @throws Exception
+	 */
+	private void loadECProp() throws Exception {
+		SAXReader reader = new SAXReader();
+		logger.debug("解析文件的字符集:" + reader.getEncoding());
+		try {
+			logger.debug("user.dir:" + System.getProperty("user.dir"));
+//			 Document doc =
+//			 reader.read("D:\\workspace\\CMPPSGW\\src\\ECProp.xml");
+			Document doc = reader.read(Thread.currentThread()
+					.getContextClassLoader().getResourceAsStream("ECProp.xml"));
+			Element root = doc.getRootElement();
+			@SuppressWarnings("unchecked")
+			Iterator<Element> iter = root.elementIterator();
+			while (iter.hasNext()) {
+				Element e = iter.next();
+				String name = e.element("name").getText();
+				String spid = e.element("spid").getText();
+				String serviceid = e.element("serviceid").getText();
+				String srcid = e.element("srcid").getText();
+				String MTTable = e.element("MTTable").getText();
+				String MOTable = e.element("MOTable").getText();
+				String ReportTable = e.element("ReportTable").getText();
+				String MTSeq = e.element("MTSeq").getText();
+				String MOSeq = e.element("MOSeq").getText();
+				String ReportSeq = e.element("ReportSeq").getText();
+				int MTCount = Integer.parseInt(e.element("MTCount").getText());
+				int MOCount = Integer.parseInt(e.element("MOCount").getText());
+				long emptyInterval = 1000*Long.parseLong(e.element("empty_interval").getText());
+				long noEmptyInterval = 1000*Long.parseLong(e.element("no_empty_interval").getText());
+				int reSendTimes = Integer.parseInt(e.element("reSendTimes").getText());
+				ECProp ec = new ECProp(name, spid, serviceid, srcid, MTTable,MOTable, ReportTable, MTCount,MOCount,emptyInterval,noEmptyInterval,reSendTimes);
+				ec.setMTSeq(MTSeq);
+				ec.setMOSeq(MOSeq);
+				ec.setReportSeq(ReportSeq);
+				SendQueue<MTMessage> mtqueue = new SendQueue<MTMessage>(MTCount);
+				MTMessageSender sender = new MTMessageSender(mtqueue,ec);
+				ec.setSender(sender);
+				MTMessageLoader loader = new MTMessageLoader(mtqueue,ec);
+				ec.setLoader(loader);
+				MOMessageStorer storer = new MOMessageStorer(new SendQueue<CMPPDeliverMessage>(MOCount),ec);
+				ec.setStorer(storer);
+				ec.run();
+				GlobalEnv.getInstance().addEC(srcid, ec);
+			}
+		} catch (Exception e) {
+			error_logger.error("MySMProxy error " + e.getMessage(),e);
+			throw e;
+		}
+	}
+	
+	/**
+	 * 停止所有的Run EC
+	 */
+	public void stop(){
+		GlobalEnv.getInstance().destroyAllECRuntime();
+	}
+	
+}

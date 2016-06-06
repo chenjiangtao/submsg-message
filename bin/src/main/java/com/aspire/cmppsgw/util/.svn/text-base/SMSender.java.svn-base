@@ -1,0 +1,66 @@
+package com.aspire.cmppsgw.util;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.slf4j.Logger;
+
+import com.aspire.cmppsgw.GlobalEnv;
+
+/**
+ * @desc 利用smrts实时短信触发程序来发送短信
+ * @author majiangtao@aspirehld.com
+ * @date 2012-5-3
+ * 
+ */
+
+public class SMSender {
+	private static Logger logger = LogAgent.monitorInfoLogger;
+	
+	/**
+	 * 发送短信方法
+	 * @param mobile
+	 * @param content
+	 * @param smsEC
+	 * @param url
+	 */
+	public static void send(String mobiles,String content, String smsEC ,String url){
+		logger.info("mobiles:"+mobiles+",content:"+content+",smsEC:"+smsEC+",url:"+url);
+		//如果不是真实发送则,直接返回
+		if(!Boolean.parseBoolean(GlobalEnv.getInstance().getValue("sms.send.real"))){
+			return;
+		}
+		for(String mobile:mobiles.split(",")){
+			try {
+				HttpClient HttpClent = new HttpClient();
+				PostMethod postMethod = new PostMethod(url);
+				setPostData(postMethod,false,true,mobile,content,smsEC);
+				int statuscode=HttpClent.executeMethod(postMethod);
+				if(statuscode!=HttpStatus.SC_OK){
+					logger.info("postMethod "+postMethod.getStatusLine());
+				}
+				String respStr=postMethod.getResponseBodyAsString();
+				logger.info("repStr:"+respStr);
+			} catch (Exception e) {
+				logger.error("触发短信失败:",e);			
+			} 
+		}
+		
+	}
+	
+	/*
+	 *设置参数信息 
+	 * @param postMethod
+	 * @param b
+	 * @param c
+	 * @param mobile
+	 * @param content
+	 * @param smsEC
+	 */
+	private static void setPostData(PostMethod postMethod, boolean b, boolean c ,String mobile,String content, String smsEC) {
+		postMethod.setParameter("content", content);
+		postMethod.setParameter("mobile", mobile);
+		postMethod.setParameter("smsEC", smsEC);
+	}
+	
+}

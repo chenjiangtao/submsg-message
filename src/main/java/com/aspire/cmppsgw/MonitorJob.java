@@ -1,6 +1,7 @@
 package com.aspire.cmppsgw;
 
 import org.quartz.CronExpression;
+import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -23,7 +24,7 @@ public class MonitorJob {
 	}
 
 	/**
-	 * ¿ªÊ¼·şÎñ
+	 * å¼€å§‹æœåŠ¡
 	 */
 	public void start() {
 		try {
@@ -34,14 +35,14 @@ public class MonitorJob {
 	}
 
 	/**
-	 * ¿ªÊ¼ÒµÎñ
+	 * å¼€å§‹ä¸šåŠ¡
 	 * 
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	public void startJob() throws Exception {
 		scheduler = StdSchedulerFactory.getDefaultScheduler();
 		monitorInfoLogger.info("start scheduler...");
+	
 		JobDetail sendsmsJobDetail = new JobDetailImpl("SendSMSJob",
 				Scheduler.DEFAULT_GROUP, SendTestSMSJob.class);
 		scheduler.scheduleJob(sendsmsJobDetail, initCronTrigger(GlobalEnv.getInstance().getValue("send.sms.cron"),"sendsms"));
@@ -49,7 +50,7 @@ public class MonitorJob {
 	}
 
 	/**
-	 * ÔİÍ£ÒµÎñ
+	 * æš‚åœä¸šåŠ¡
 	 */
 	public void stopJob() {
 		if (scheduler != null) {
@@ -62,13 +63,12 @@ public class MonitorJob {
 	}
 
 	/**
-	 * ³õÊ¼»¯¹Ì¶¨Ê±¼ä×÷Òµ´¥·¢Æ÷
+	 * åˆå§‹åŒ–å›ºå®šæ—¶é—´ä½œä¸šè§¦å‘å™¨
 	 * 
 	 * @param interval
-	 *            ´¥·¢ÒµÎñµÄ¹Ì¶¨Ê±¼ä
+	 *            è§¦å‘ä¸šåŠ¡çš„å›ºå®šæ—¶é—´
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
 	private Trigger initCronTrigger(String time,String name) throws Exception {
 		if(name == null){
 			CronTriggerImpl cronTrigger = new CronTriggerImpl("cronTrigger");
