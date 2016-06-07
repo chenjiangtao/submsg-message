@@ -16,9 +16,9 @@ import com.sr178.game.framework.log.LogSystem;
 public class MsgSendUtils {
 	public static int tp_Pid =  GlobalEnv.getInstance().getIntValue("tp_Pid");
 	public static int tp_Udhi =  GlobalEnv.getInstance().getIntValue("tp_Udhi");
-	public static int fmt =  GlobalEnv.getInstance().getIntValue("fmt");
 	public static int fee_UserType =  GlobalEnv.getInstance().getIntValue("fee_UserType");
-	
+	public static String msgSrc =  GlobalEnv.getInstance().getValue("send.sms.spuser");
+  	
 	private static final int Re_Send_Times = 3;
 	/**
 	 * 短信发送
@@ -67,6 +67,8 @@ public class MsgSendUtils {
 	
 	private static String sendShortMsg(String targetMobile,String msgContent,String signNum){
 		String result = "";	
+		int fmt=15;
+		LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt+",msgSrc:"+msgSrc);
 		try {
 				String[] ms = {targetMobile};
 				LogSystem.info("short send mobile= [" +targetMobile + "] send content= ["+ msgContent+"]");
@@ -75,9 +77,8 @@ public class MsgSendUtils {
 					LogSystem.info("mySMProxy is null--->direct return null");
 					return null;
 				}
-				LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt);
 				CMPPSubmitMessage csm = new CMPPSubmitMessage(1, 1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
-						targetMobile, tp_Pid, tp_Udhi, fmt, GlobalEnv.getInstance().getValue("send.sms.spid"), "01", "0", null, null,
+						targetMobile, tp_Pid, tp_Udhi, fmt, GlobalEnv.getInstance().getValue("send.sms.spuser"), "01", "0", null, null,
 						GlobalEnv.getInstance().getValue("send.sms.srcid")+signNum,ms,msgContent.getBytes(), "");
 				
 				CMPPMessage submitRepMsg = mySMProxy.send(csm);
@@ -94,6 +95,8 @@ public class MsgSendUtils {
 	private static String sendLongMsg(String targetMobile,String msgContent,String signNum){
 		String result = "";	
 		LogSystem.info("开始发送长短信");
+		int fmt=8;
+		LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt+",msgSrc:"+msgSrc);
 		try {
 			String mobile = GlobalEnv.getInstance().getMobile();	
 				String[] ms = {mobile};
@@ -103,12 +106,12 @@ public class MsgSendUtils {
 					LogSystem.info("mySMProxy is null--->direct return null");
 					return null;
 				}
-				LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt);
+				
 				byte[][] smschars = LongSMSUtil.enCodeBytes(msgContent,true);
 				List<CMPPMessage> list = new ArrayList<CMPPMessage>();
 				for (int i = 0; i < smschars.length; i++) {
 					CMPPSubmitMessage csm = new CMPPSubmitMessage(1, 1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
-							mobile, tp_Pid, tp_Udhi, fmt, GlobalEnv.getInstance().getValue("send.sms.spid"), "01", "0", null, null,
+							mobile, tp_Pid, tp_Udhi, fmt, msgSrc, "01", "0", null, null,
 							GlobalEnv.getInstance().getValue("send.sms.srcid")+signNum,ms,smschars[i], "");
 					list.add(csm);
 				}
