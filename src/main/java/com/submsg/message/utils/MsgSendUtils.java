@@ -18,6 +18,9 @@ public class MsgSendUtils {
 	public static int tp_Udhi =  GlobalEnv.getInstance().getIntValue("tp_Udhi");
 	public static int fee_UserType =  GlobalEnv.getInstance().getIntValue("fee_UserType");
 	public static String msgSrc =  GlobalEnv.getInstance().getValue("send.sms.spuser");
+	
+	public static final String GBK = "GBK";
+	
   	
 	private static final int Re_Send_Times = 3;
 	/**
@@ -32,7 +35,7 @@ public class MsgSendUtils {
 	public static String sendMessage(String targetPhone,String content,String signNum) {
 		LogSystem.info("send mobile= [" +targetPhone + "] send content= ["+ content+"]");
 		try{
-			int contentLength = content.getBytes("utf-8").length;
+			int contentLength = content.getBytes(LongSMSUtil.CHARSET_UCS2).length;
 			LogSystem.info("content length="+contentLength+"");
 			if(contentLength<140){//短短信
 				String msgId=sendShortMsg(targetPhone,content,signNum);
@@ -67,7 +70,7 @@ public class MsgSendUtils {
 	
 	private static String sendShortMsg(String targetMobile,String msgContent,String signNum){
 		String result = "";	
-		int fmt=15;
+		int fmt=8;
 		LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt+",msgSrc:"+msgSrc);
 		try {
 				String[] ms = {targetMobile};
@@ -79,7 +82,7 @@ public class MsgSendUtils {
 				}
 				CMPPSubmitMessage csm = new CMPPSubmitMessage(1, 1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
 						targetMobile, tp_Pid, tp_Udhi, fmt, GlobalEnv.getInstance().getValue("send.sms.spuser"), "01", "0", null, null,
-						GlobalEnv.getInstance().getValue("send.sms.srcid")+signNum,ms,msgContent.getBytes(), "");
+						GlobalEnv.getInstance().getValue("send.sms.srcid")+signNum,ms,msgContent.getBytes(LongSMSUtil.CHARSET_UCS2), "");
 				
 				CMPPMessage submitRepMsg = mySMProxy.send(csm);
 				CMPPSubmitRepMessage crm = (CMPPSubmitRepMessage) submitRepMsg;

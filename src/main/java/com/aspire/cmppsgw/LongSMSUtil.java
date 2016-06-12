@@ -17,7 +17,7 @@ public class LongSMSUtil {
 	private static final Logger log = Logger.getLogger(LongSMSUtil.class);
 
 	// ucs2编码
-	private static final String CHARSET_UCS2 = "UTF-16BE";
+	public static final String CHARSET_UCS2 = "UTF-16BE";
 
 	// 最后一条短信的长度（预留企业签名的长度）
 	protected static final int SMSMAXLENGTH_LAST = 139-15;
