@@ -49,7 +49,7 @@ public class SendLongSMS {
 				byte[][] smschars = LongSMSUtil.enCodeBytes(content,true);
 				List<CMPPMessage> list = new ArrayList<CMPPMessage>();
 				for (int i = 0; i < smschars.length; i++) {
-					CMPPSubmitMessage csm = new CMPPSubmitMessage(1, 1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
+					CMPPSubmitMessage csm = new CMPPSubmitMessage(smschars.length, i+1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
 							mobile, tp_Pid, tp_Udhi, fmt, GlobalEnv.getInstance().getValue("send.sms.spid"), "01", "0", null, null,
 							GlobalEnv.getInstance().getValue("send.sms.srcid"),ms,smschars[i], "");
 					list.add(csm);
