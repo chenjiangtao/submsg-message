@@ -102,8 +102,7 @@ public class MsgSendUtils {
 		int tp_Udhi=1;
 		LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt+",msgSrc:"+msgSrc);
 		try {
-			String mobile = GlobalEnv.getInstance().getMobile();	
-				String[] ms = {mobile};
+				String[] ms = {targetMobile};
 				LogSystem.info("long send mobile= [" +targetMobile + "] send content= ["+ msgContent+"]");
 				MySMProxy20 mySMProxy = MySMProxy20.getInstance();
 				if(mySMProxy == null){
@@ -115,7 +114,7 @@ public class MsgSendUtils {
 				List<CMPPMessage> list = new ArrayList<CMPPMessage>();
 				for (int i = 0; i < smschars.length; i++) {
 					CMPPSubmitMessage csm = new CMPPSubmitMessage(smschars.length, i+1, 1, 5, GlobalEnv.getInstance().getValue("send.sms.serviceid"), fee_UserType,
-							mobile, tp_Pid, tp_Udhi, fmt, msgSrc, "01", "0", null, null,
+							targetMobile, tp_Pid, tp_Udhi, fmt, msgSrc, "01", "0", null, null,
 							GlobalEnv.getInstance().getValue("send.sms.srcid")+signNum,ms,smschars[i], "");
 					list.add(csm);
 				}
