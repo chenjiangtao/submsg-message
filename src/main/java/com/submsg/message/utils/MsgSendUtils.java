@@ -28,38 +28,38 @@ public class MsgSendUtils {
 	 * @param projectId   项目id
 	 * @param modeId      模板id
 	 * @param targetPhone  目标手机
-	 * @return  返回消息在网关那里生成的序列号
+	 * @return String[]  第一个元素为返回消息在网关那里生成的序列号  第二个元素为返回的code
 	 * @throws IOException 
 	 */
-	public static String sendMessage(String targetPhone,String content,String signNum) {
+	public static String[] sendMessage(String targetPhone,String content,String signNum) {
 		LogSystem.info("send mobile= [" +targetPhone + "] send content= ["+ content+"]");
 		try{
 			int contentLength = content.getBytes(LongSMSUtil.CHARSET_UCS2).length;
 			LogSystem.info("content length="+contentLength+"");
 			if(contentLength<140){//短短信
-				String msgId=sendShortMsg(targetPhone,content,signNum);
+				String[] result=sendShortMsg(targetPhone,content,signNum);
 				int count=0;
-				while(msgId==null){//
+				while(result==null){//
 					count++;
 					LogSystem.info("short retry send，times="+count);
-					msgId=sendShortMsg(targetPhone,content,signNum);
+					result=sendShortMsg(targetPhone,content,signNum);
 					if(count>=(Re_Send_Times-1)){//如果再次连接次数超过两次则终止连接
 						break;
 					}
 				}
-				return msgId;
+				return result;
 			}else{//长短信
-				String msgId=sendLongMsg(targetPhone,content,signNum);
+				String[] result=sendLongMsg(targetPhone,content,signNum);
 				int count=0;
-				while(msgId==null){
+				while(result==null){
 					count++;
 					LogSystem.info("long retry send，times="+count);
-					msgId=sendLongMsg(targetPhone,content,signNum);
+					result=sendLongMsg(targetPhone,content,signNum);
 					if(count>=(Re_Send_Times-1)){//如果再次连接次数超过两次则终止连接
 						break;
 					}
 				}
-				return msgId;
+				return result;
 			}
 		}catch(Exception e){
 			 LogSystem.error(e, "发送短信失败");
@@ -67,8 +67,8 @@ public class MsgSendUtils {
 		return null;
 	}
 	
-	private static String sendShortMsg(String targetMobile,String msgContent,String signNum){
-		String result = "";	
+	private static String[] sendShortMsg(String targetMobile,String msgContent,String signNum){
+		String[] result = null;	
 		int fmt=8;
 		int tp_Udhi=0;
 		LogSystem.info("tp_Pid:"+tp_Pid+",tp_Udhi:"+tp_Udhi+",fmt:"+fmt+",msgSrc:"+msgSrc);
@@ -87,7 +87,7 @@ public class MsgSendUtils {
 				CMPPMessage submitRepMsg = mySMProxy.send(csm);
 				CMPPSubmitRepMessage crm = (CMPPSubmitRepMessage) submitRepMsg;
 				long msgId = TypeConvert.byte2long(crm.getMsgId());
-				result = msgId+"";
+				result = new String[]{msgId+"",crm.getResult()+""};
 				LogSystem.info(targetMobile+"," + msgId + ",result:" + crm.getResult());	
 		} catch (Exception e) {
 			LogSystem.error(e,"发送短短信发生错误");
@@ -95,8 +95,8 @@ public class MsgSendUtils {
 		return result;
 	}
 	
-	private static String sendLongMsg(String targetMobile,String msgContent,String signNum){
-		String result = "";	
+	private static String[] sendLongMsg(String targetMobile,String msgContent,String signNum){
+		String[] result = null;	
 		LogSystem.info("开始发送长短信");
 		int fmt=8;
 		int tp_Udhi=1;
@@ -123,7 +123,7 @@ public class MsgSendUtils {
 					CMPPMessage submitRepMsg = mySMProxy.send(csm);
 					CMPPSubmitRepMessage crm = (CMPPSubmitRepMessage) submitRepMsg;
 					long msgId = TypeConvert.byte2long(crm.getMsgId());
-					result = msgId+"";
+					result = new String[]{msgId+"",crm.getResult()+""};
 					LogSystem.info(targetMobile+"," + msgId + ",result:" + crm.getResult());					}
 				
 				
