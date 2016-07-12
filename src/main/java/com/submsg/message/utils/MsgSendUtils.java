@@ -18,6 +18,8 @@ public class MsgSendUtils {
 	public static int fee_UserType =  GlobalEnv.getInstance().getIntValue("fee_UserType");
 	public static String msgSrc =  GlobalEnv.getInstance().getValue("send.sms.spuser");
 	
+	public static boolean isOpen =  GlobalEnv.getInstance().getBoolValue("is_open",false);
+	
 	public static final String GBK = "GBK";
 	
   	
@@ -33,6 +35,12 @@ public class MsgSendUtils {
 	 */
 	public static String[] sendMessage(String targetPhone,String content,String signNum) {
 		LogSystem.info("send mobile= [" +targetPhone + "] send content= ["+ content+"]");
+		
+		if(!isOpen){
+			LogSystem.info("不是真的发送了消息,但返回一个随机的结果，");
+			return  new String[]{System.currentTimeMillis()+"","0"};
+		}
+		
 		try{
 			int contentLength = content.getBytes(LongSMSUtil.CHARSET_UCS2).length;
 			LogSystem.info("content length="+contentLength+"");

@@ -1,6 +1,8 @@
 package com.submsg.message.plugin;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -20,18 +22,30 @@ public class MsgReqDealPlugin implements IAppPlugin {
     @Autowired
 	private MessageQueueService messageQueueService;
     
+    
+    private AtomicInteger sendNum = new AtomicInteger();
+    
+    private AtomicBoolean isShutDown  = new AtomicBoolean(false);
+    
 	@Override
 	public void startup() throws Exception {
+		taskExecuter.setWaitForTasksToCompleteOnShutdown(true);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (true) {
 					try {
+						if(isShutDown.get()){
+							LogSystem.warn("关闭队列监听程序！不再监听队列信息");
+							return;
+						}
 						MsgBean msgBean = messageQueueService.blockReqPopMsg();
 						if (msgBean != null) {
+							int num = sendNum.incrementAndGet();
+							LogSystem.info("发送第["+num+"]条短信["+msgBean.getSendId()+"]");
 							handlerRequest(msgBean);
 						} else {
-							LogSystem.info("当前没有发送短信的请求");
+							LogSystem.info("当前没有发送短信的请求,已发送短信数量"+sendNum.get());
 						}
 					} catch (Exception e) {
 						LogSystem.error(e, "");
@@ -44,6 +58,20 @@ public class MsgReqDealPlugin implements IAppPlugin {
 				}
 			}
 		}).start();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			  public void run() {
+				  LogSystem.warn("收到关闭的消息 执行优雅关闭操作！~~~");
+				  isShutDown.compareAndSet(false, true);
+				  taskExecuter.shutdown();
+				  try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					 
+				}
+				LogSystem.warn("优雅关闭成功！~~");
+			  }
+			});
 	}
 	
 	/**
@@ -87,13 +115,10 @@ public class MsgReqDealPlugin implements IAppPlugin {
 	
 	@Override
 	public int cpOrder() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void shutdown() throws Exception {
-		
-		
 	}
 }
