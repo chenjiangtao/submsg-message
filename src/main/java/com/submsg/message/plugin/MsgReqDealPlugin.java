@@ -36,7 +36,7 @@ public class MsgReqDealPlugin implements IAppPlugin {
 				while (true) {
 					try {
 						if(isShutDown.get()){
-							LogSystem.warn("关闭队列监听程序！不再监听队列信息");
+							LogSystem.warn("关闭队列监听程序！不再监听队列信息.已发送数量为"+sendNum.get());
 							return;
 						}
 						MsgBean msgBean = messageQueueService.blockReqPopMsg();
@@ -63,12 +63,12 @@ public class MsgReqDealPlugin implements IAppPlugin {
 			  public void run() {
 				  LogSystem.warn("收到关闭的消息 执行优雅关闭操作！~~~");
 				  isShutDown.compareAndSet(false, true);
-				  taskExecuter.shutdown();
 				  try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					 
-				}
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						 
+					}
+				  taskExecuter.shutdown();
 				LogSystem.warn("优雅关闭成功！~~");
 			  }
 			});
@@ -89,9 +89,9 @@ public class MsgReqDealPlugin implements IAppPlugin {
 				 //删除比较大的内容 优化下性能
 				 msgBean.setContent(null);
 				 
-				 msgBean.setStatus(MsgSendLog.ST_SEND);
-				 msgBean.setSendTime(new Date());
-				 messageQueueService.pushResMsg(msgBean);//响应发送消息
+//				 msgBean.setStatus(MsgSendLog.ST_SEND);
+//				 msgBean.setSendTime(new Date());
+//				 messageQueueService.pushResMsg(msgBean);//响应发送消息
 				 String[] result = MsgSendUtils.sendMessage(to,content,signNum);
 				 if(result==null){
 					 LogSystem.info("sendid="+msgBean.getSendId()+"发送失败！");
