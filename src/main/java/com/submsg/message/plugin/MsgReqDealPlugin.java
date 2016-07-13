@@ -64,7 +64,7 @@ public class MsgReqDealPlugin implements IAppPlugin {
 				  LogSystem.warn("收到关闭的消息 执行优雅关闭操作！~~~");
 				  isShutDown.compareAndSet(false, true);
 				  try {
-						Thread.sleep(3000);
+						Thread.sleep(5000);
 					} catch (InterruptedException e) {
 						 
 					}
