@@ -20,7 +20,7 @@
        <!-- 操作超时时间(单位：秒) -->
        <transaction-timeout>10</transaction-timeout>
        <!--双方协商的版本号(大于0，小于256)-->
-       <version>1</version>
+       <version>32</version>
        <!--是否属于调试状态,true表示属于调试状态，所有的消息被打印输出到屏幕，false表示不属于调试状态，所有的消息不被输出-->
        <debug>true</debug>
     </CMPPConnect>

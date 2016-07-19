@@ -2,6 +2,7 @@ package com.aspire.cmppsgw.util;
 
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.Date;
 
 import org.slf4j.Logger;
 
@@ -9,8 +10,12 @@ import com.huawei.insa2.comm.cmpp.message.CMPPDeliverMessage;
 import com.huawei.insa2.comm.cmpp.message.CMPPMessage;
 import com.huawei.insa2.util.Args;
 import com.huawei.insa2.util.Cfg;
-import com.huawei.insa2.util.TypeConvert;
 import com.huawei.smproxy.SMProxy;
+import com.sr178.game.framework.context.ServiceCacheFactory;
+import com.sr178.game.framework.log.LogSystem;
+
+import cn.submsg.member.bo.MsgDeleverLog;
+import cn.submsg.message.service.MessageQueueService;
 
 public class MySMProxy20 extends SMProxy {
 	private static MySMProxy20 instance;
@@ -49,20 +54,29 @@ public class MySMProxy20 extends SMProxy {
 	public CMPPMessage onDeliver(CMPPDeliverMessage msg) {
 
 		try {
-			// ״̬����
-			if (msg.getRegisteredDeliver() == 1) {
 				ByteBuffer buffer = ByteBuffer.wrap(msg.getStatusMsgId());
 				long mId = buffer.getLong();
-				report_logger.info(mId + "," + msg.getStat() + ","
-						+ msg.getDestnationId());
+			//状态回调
+//			if (msg.getRegisteredDeliver() == 1) {
+//				ByteBuffer buffer = ByteBuffer.wrap(msg.getStatusMsgId());
+//				long mId = buffer.getLong();
+//				report_logger.info(mId + "," + msg.getStat() + ","
+//						+ msg.getDestnationId());
 
-			} else {
-				mo_logger.info(msg.getSrcterminalId() + ","
-						+ new String(msg.getMsgContent()) + ","
-						+ msg.getDestnationId());
-			}
+//			} else {
+//				mo_logger.info(msg.getSrcterminalId() + ","
+//						+ new String(msg.getMsgContent()) + ","
+//						+ msg.getDestnationId());
+//			}
+			MessageQueueService queueService = ServiceCacheFactory.getService(MessageQueueService.class);
+			MsgDeleverLog msgDeleverLog = new MsgDeleverLog();
+			msgDeleverLog.setCreatedTime(new Date());
+			msgDeleverLog.setDestnationId(msg.getDestnationId());
+			msgDeleverLog.setMsgId(mId+"");
+			msgDeleverLog.setStat(msg.getStat());
+			queueService.pushDeleverReqMsg(msgDeleverLog);
 		} catch (Exception e) {
-			error_logger.error(e.getMessage(),e);
+			LogSystem.error(e, "");
 		}
 		return super.onDeliver(msg);
 	}
