@@ -1,19 +1,29 @@
 package com.submsg.message.plugin;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import com.sr178.game.framework.log.LogSystem;
 import com.sr178.game.framework.plugin.IAppPlugin;
+import com.sr178.module.sms.entity.SubMailResult;
+import com.sr178.module.sms.util.SubMailSendUtils;
 import com.submsg.message.utils.MsgSendUtils;
 
 import cn.submsg.member.bo.MsgSendLog;
 import cn.submsg.message.bean.MsgBean;
 import cn.submsg.message.service.MessageQueueService;
+import cn.submsg.message.utils.MsgContentUtils;
 
 public class MsgReqDealPlugin implements IAppPlugin {
 	@Autowired
@@ -92,7 +102,20 @@ public class MsgReqDealPlugin implements IAppPlugin {
 //				 msgBean.setStatus(MsgSendLog.ST_SEND);
 //				 msgBean.setSendTime(new Date());
 //				 messageQueueService.pushResMsg(msgBean);//响应发送消息
-				 String[] result = MsgSendUtils.sendMessage(to,content,signNum);
+				 String[] result = null;
+				 
+				 //国内短信
+				 if(to.indexOf("+")==-1){
+					 if(msgBean.getSendType()==MsgContentUtils.SENDTYPE_SUBMAIL){
+						 result = sendMsgBySubMail(to, msgBean.getTempId(), msgBean.getVars());
+					 }else if(msgBean.getSendType()==MsgContentUtils.SENDTYPE_ZW){
+						 result = MsgSendUtils.sendMessage(to,content,signNum);
+					 }else{
+						 throw new RuntimeException("不支持的短信发送渠道");
+					 }
+				 }else{//国外短信
+					 throw new RuntimeException("暂时不支持的国际短信的发送");
+				 }
 				 if(result==null){
 					 LogSystem.info("sendid="+msgBean.getSendId()+"发送失败！");
 					 msgBean.setStatus(MsgSendLog.ST_FAIL);
@@ -111,6 +134,31 @@ public class MsgReqDealPlugin implements IAppPlugin {
 				}
 			}
 		});
+	}
+	
+	
+	/**
+	 * 直接通过submail来发送国内短信
+	 * @param to
+	 * @param tempId
+	 * @param param
+	 * @return
+	 */
+	private String[] sendMsgBySubMail(String to,String tempId,String vars){
+		 Map<String,String> param = new HashMap<String,String>();
+		 if(!Strings.isNullOrEmpty(vars)){
+			 JSONObject jsonObject = JSON.parseObject(vars);
+			 Set<Entry<String, Object>> sets = jsonObject.entrySet();
+			 for (Entry<String, Object> entry : sets) {
+				 param.put(entry.getKey(), entry.getValue().toString());
+			 }
+		 }
+		SubMailResult result =  SubMailSendUtils.sendMessageForResult(to, tempId, param);
+	    if(result!=null){
+	    	return new String[]{result.getSend_id(),result.getStatus()};
+	    }else{
+	    	return null;
+	    }
 	}
 	
 	@Override
