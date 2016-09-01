@@ -24,6 +24,11 @@ public class MsgSendUtils {
 	
   	
 	private static final int Re_Send_Times = 3;
+	
+	
+	private final static String YZM_MESSAGE = "验证码";
+	private final static String YZM_SIGN_NUM = "08";
+	
 	/**
 	 * 短信发送
 	 * @param merchantID  商户id
@@ -40,7 +45,10 @@ public class MsgSendUtils {
 			LogSystem.info("不是真的发送了消息,但返回一个随机的结果，");
 			return  new String[]{System.currentTimeMillis()+"","0"};
 		}
-		
+		//验证码短信直接走验证码通道
+		if(content.indexOf(YZM_MESSAGE)!=-1){
+			signNum = YZM_SIGN_NUM;
+		}
 		try{
 			int contentLength = content.getBytes(LongSMSUtil.CHARSET_UCS2).length;
 			LogSystem.info("content length="+contentLength+"");
