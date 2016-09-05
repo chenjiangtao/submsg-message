@@ -14,6 +14,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
+import com.miaodiyun.MDSendUtils;
 import com.sr178.game.framework.log.LogSystem;
 import com.sr178.game.framework.plugin.IAppPlugin;
 import com.sr178.module.sms.entity.SubMailResult;
@@ -110,7 +111,10 @@ public class MsgReqDealPlugin implements IAppPlugin {
 						 result = sendMsgBySubMail(to, msgBean.getTempId(), msgBean.getVars());
 					 }else if(msgBean.getSendType()==MsgContentUtils.SENDTYPE_ZW){
 						 result = MsgSendUtils.sendMessage(to,content,signNum);
-					 }else{
+					 }else if(msgBean.getSendType()==MsgContentUtils.SENDTYPE_MD){
+						 result = MDSendUtils.sendMsg(to, content);
+					 }
+					 else{
 						 throw new RuntimeException("不支持的短信发送渠道");
 					 }
 				 }else{//国外短信
