@@ -11,6 +11,8 @@ import java.util.Date;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.sr178.game.framework.log.LogSystem;
+
 /**
  * http请求工具
  */
@@ -45,9 +47,6 @@ public class HttpUtil
 	 */
 	public static String post(String url, String body)
 	{
-		System.out.println("url:" + System.lineSeparator() + url);
-		System.out.println("body:" + System.lineSeparator() + body);
-
 		String result = "";
 		try
 		{
@@ -84,7 +83,7 @@ public class HttpUtil
 			}
 		} catch (Exception e)
 		{
-			e.printStackTrace();
+			LogSystem.error(e, "");
 		}
 		return result;
 	}

@@ -36,21 +36,29 @@ public class IndustrySMS
 //		System.out.println("result:" + System.lineSeparator() + result);
 //	}
 	
-	public static String[] sendMsg(String to,String content){
-		LogSystem.info("发送方式为秒滴！");
-		String[] result = new String[2];
-		String url = Config.BASE_URL + operation;
-		String body = "accountSid=" + accountSid + "&to=" + to + "&smsContent=" + content
-				+ HttpUtil.createCommonParam();
-		String resultStr = HttpUtil.post(url, body);
-		JSONObject json = JSONObject.fromObject(resultStr);
-		LogSystem.info("result:" + System.lineSeparator() + resultStr);
-		if(json.getString("respCode").equals(RespCode.SUCCESS)){
-			result[0] = json.getString("smsId");
-			result[1] = RespCode.SUCCESS;
-			return result;
-		}else{
-			return null;
+	public static String[] sendMsg(String to, String content) {
+		String resultStr = "";
+		String url = "";
+		String body = "";
+		try {
+			LogSystem.info("发送方式为秒滴！");
+			String[] result = new String[2];
+			url = Config.BASE_URL + operation;
+			body = "accountSid=" + accountSid + "&to=" + to + "&smsContent=" + content
+					+ HttpUtil.createCommonParam();
+			resultStr = HttpUtil.post(url, body);
+			JSONObject json = JSONObject.fromObject(resultStr);
+			LogSystem.info("result:" + System.lineSeparator() + resultStr);
+			if (json.getString("respCode").equals(RespCode.SUCCESS)) {
+				result[0] = json.getString("smsId");
+				result[1] = RespCode.SUCCESS;
+				return result;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			LogSystem.error(e, "处理秒滴发送出错，返回结果为：["+resultStr+"],url=["+url+"],body=["+body+"]");
 		}
+		return null;
 	}
 }
