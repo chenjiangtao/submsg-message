@@ -1,11 +1,22 @@
 package com.miaodiyun;
 
 import com.miaodiyun.httpApiDemo.IndustrySMS;
+import com.sr178.game.framework.log.LogSystem;
 
 public class MDSendUtils {
 
 	public static String[] sendMsg(String to ,String content){
-		 return IndustrySMS.sendMsg(to, content);
+		String[] result = IndustrySMS.sendMsg(to, content);
+		int i=3;
+		while(result==null&&--i>0){
+			result = IndustrySMS.sendMsg(to, content);
+			if(result==null){
+				LogSystem.warn("重新第"+i+"发送一次"+to+",content"+content+":结果＝失败");
+			}else{
+				LogSystem.warn("重新第"+i+"发送一次"+to+",content"+content+":结果＝成功");
+			}
+		}
+		return result;
 	}
 	
 	public static void main(String[] args) {
