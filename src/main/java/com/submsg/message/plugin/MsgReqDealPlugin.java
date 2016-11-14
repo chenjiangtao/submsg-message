@@ -20,6 +20,7 @@ import com.sr178.game.framework.plugin.IAppPlugin;
 import com.sr178.module.sms.entity.SubMailResult;
 import com.sr178.module.sms.util.SubMailSendUtils;
 import com.submsg.message.utils.MsgSendUtils;
+import com.yunpian.sdk.YPSendUtils;
 
 import cn.submsg.member.bo.MsgSendLog;
 import cn.submsg.message.bean.MsgBean;
@@ -113,12 +114,14 @@ public class MsgReqDealPlugin implements IAppPlugin {
 						 result = MsgSendUtils.sendMessage(to,content,signNum);
 					 }else if(msgBean.getSendType()==MsgContentUtils.SENDTYPE_MD){
 						 result = MDSendUtils.sendMsg(to, content);
+					 }else if(msgBean.getSendType()==MsgContentUtils.SENDTYPE_YP){
+						 result = YPSendUtils.sendSms(to, content);
 					 }
 					 else{
 						 throw new RuntimeException("不支持的短信发送渠道");
 					 }
 				 }else{//国外短信
-					 throw new RuntimeException("暂时不支持的国际短信的发送");
+					 YPSendUtils.sendSms(to, content);
 				 }
 				 if(result==null){
 					 LogSystem.info("sendid="+msgBean.getSendId()+"发送失败！");
