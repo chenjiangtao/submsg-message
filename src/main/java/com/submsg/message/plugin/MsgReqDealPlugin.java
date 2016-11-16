@@ -121,7 +121,7 @@ public class MsgReqDealPlugin implements IAppPlugin {
 						 throw new RuntimeException("不支持的短信发送渠道");
 					 }
 				 }else{//国外短信
-					 YPSendUtils.sendSms(to, content);
+					 result = YPSendUtils.sendSms(to, content);
 				 }
 				 if(result==null){
 					 LogSystem.info("sendid="+msgBean.getSendId()+"发送失败！");
